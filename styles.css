@@ -92,7 +92,7 @@ html { background: var(--night); scroll-padding-top: calc(var(--frame) + var(--p
 /* Pixel mouse pointers: an arrow, and a hand over anything you can press.
    The second line of each pair is a sharper copy for high-resolution screens. */
 html { cursor: url(images/cursor.png) 0 0, auto; cursor: image-set(url(images/cursor.png) 1x, url(images/cursor@2x.png) 2x) 0 0, auto; }
-a, button { cursor: url(images/cursor-hand.png) 7 0, pointer; cursor: image-set(url(images/cursor-hand.png) 1x, url(images/cursor-hand@2x.png) 2x) 7 0, pointer; }
+a, button { cursor: url(images/cursor-hand.png) 5 0, pointer; cursor: image-set(url(images/cursor-hand.png) 1x, url(images/cursor-hand@2x.png) 2x) 5 0, pointer; }
 
 body {
   display: grid;
