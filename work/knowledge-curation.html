@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Continuous Knowledge Curation | Cherryann Yang</title>
+<meta name="description" content="Agentic pipelines for continuous knowledge curation, built in the PLAINTEXT Lab at Penn State.">
+<link rel="icon" href="../images/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#activities">Activities</a></li>
+      <li><a href="../index.html#feed">Feed</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Research</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: curation">Continuous Knowledge Curation</span></h1>
+    <p class="lede">Agentic pipelines that search for research papers in rounds, built in the PLAINTEXT Lab. Three locally hosted language models refine the queries and judge relevance across more than 2,000 papers, and each keep or discard decision shapes the next round.</p>
+
+    <figure>
+      <ol class="steps cycle">
+        <li><strong>Query</strong> A language model refines the search query.</li>
+        <li><strong>Retrieve</strong> Papers come in from Semantic Scholar, OpenAlex and arXiv, and duplicates are merged.</li>
+        <li><strong>Judge</strong> A language model scores each paper for relevance.</li>
+        <li><strong>Keep or discard</strong> Each decision shapes the query for the next round.</li>
+      </ol>
+      <figcaption>One round of the loop. The fourth step feeds back into the first.</figcaption>
+    </figure>
+
+    <section>
+      <h2>The scripted pipeline</h2>
+      <p>The scripted version is a loop in Python: retrieve, normalize, store, rank, feedback. It pulls papers from Semantic Scholar, OpenAlex and arXiv and deduplicates them by identifier into SQLite. It ranks the merged pool with SBERT plus weighted lexical, recency and citation scores, then expands the next query with keywords from the top results.</p>
+    </section>
+
+    <section>
+      <h2>Adding language models</h2>
+      <p>The agentic version puts a language model at three bounded points: expanding the query, scoring relevance as a judge, and turning keep and discard decisions into preference text for the next round. User feedback stays primary.</p>
+      <p>The three models are hosted locally through LM Studio. Around them I built agent harnesses with system prompts, 5+ custom tools, behavioral modes and evaluation frameworks. The same ETL pipelines feed Dynamic Live Surveys, handling 5,000+ research papers through extraction, transformation and loading.</p>
+      <p>We compared the scripted and agentic workflows over successive search rounds, and I co-authored and presented the poster at the college’s inaugural AI in Research Symposium.</p>
+    </section>
+
+    <figure>
+      <a href="knowledge-curation-poster.pdf"><img src="../images/poster.webp" width="1800" height="1350" alt="The poster, From Scripted to Agentic Continuous Knowledge Curation. It draws the scripted, LLM-assisted and agentic pipelines as diagrams, with the results we expect and where the work could be used." loading="lazy"></a>
+      <figcaption>The poster. <a href="knowledge-curation-poster.pdf">Open the PDF</a></figcaption>
+    </figure>
+
+    <section>
+      <h2>What it can’t tell me yet</h2>
+      <p>I can run this system end to end. I could also revise the prompt until the judge looked better. What I could not say is whether its score was valid, or whether a person reading it would know when to overrule it. That is the question I want to work on next.</p>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>Role</dt><dd>Undergraduate Research Assistant</dd></div>
+      <div><dt>Lab</dt><dd><a href="https://plaintext.psu.edu">PLAINTEXT Lab</a>, College of IST, Penn State</dd></div>
+      <div><dt>When</dt><dd>May 2026 to present</dd></div>
+      <div><dt>Built with</dt><dd>Python, LM Studio, SBERT, SQLite</dd></div>
+      <div><dt>Poster</dt><dd><a href="knowledge-curation-poster.pdf">From Scripted to Agentic Continuous Knowledge Curation</a>, College of IST AI in Research Symposium, Oct 2026</dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>

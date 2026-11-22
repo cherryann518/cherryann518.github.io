@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antibody Level Prediction | Cherryann Yang</title>
+<meta name="description" content="A model that predicts antibody levels from vaccination and infection history, built in R with features that cannot leak post-sample events.">
+<link rel="icon" href="../images/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#activities">Activities</a></li>
+      <li><a href="../index.html#feed">Feed</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Project</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: antibody">Antibody Level Prediction</span></h1>
+    <p class="lede">A model that predicts a person’s antibody level from their vaccination and infection history. I built it in R with <code>data.table</code> for a Kaggle competition.</p>
+
+    <figure>
+      <ol class="steps">
+        <li><strong>Clean</strong> Events dated after the blood sample count as not having happened yet.</li>
+        <li><strong>Screen</strong> About 100 extra covariates, filtered by correlation with log antibody level.</li>
+        <li><strong>Validate</strong> Five folds that hold out whole patient profiles, not rows.</li>
+        <li><strong>Predict</strong> A linear model on the log scale, with a lookup for profiles seen in training.</li>
+      </ol>
+    </figure>
+
+    <section>
+      <h2>Features</h2>
+      <p>The data counts days between each event and the blood sample. A negative count means the event came after the sample, so it cannot have affected the antibody level. Those are recoded as not yet: no third dose yet, no prior infection yet.</p>
+      <p>The cleaned features are the most recent dose and how long ago it was, the vaccine brand, prior infection, and symptom severity.</p>
+    </section>
+
+    <section>
+      <h2>Covariate screening</h2>
+      <p>Each sample also comes with about 100 CovVar covariates. I kept only the ones whose correlation with log antibody level was above 0.1 in absolute value. The log is there because antibody levels are skewed.</p>
+    </section>
+
+    <section>
+      <h2>Validation</h2>
+      <p>The same clinical profile appears many times in the training data with only age and sex changed, so random row folds would put near-identical rows on both sides. The five folds hold out whole profiles instead.</p>
+      <p>Three linear models are compared by mean absolute error on the original scale, against a null model that always predicts one constant.</p>
+    </section>
+
+    <section>
+      <h2>Profile lookup</h2>
+      <p>When a test row has exactly the same clinical profile as rows in training, the prediction is the training average for that profile rather than the regression estimate.</p>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>Competition</dt><dd>Kaggle</dd></div>
+      <div><dt>When</dt><dd>2026</dd></div>
+      <div><dt>Built with</dt><dd>R, <code>data.table</code></dd></div>
+      <div><dt>Scored by</dt><dd>Mean absolute error</dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>

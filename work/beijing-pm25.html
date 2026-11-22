@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beijing PM2.5 Forecasting | Cherryann Yang</title>
+<meta name="description" content="A model that forecasts PM2.5 at 12 Beijing stations 24 hours ahead, built in R with data.table and XGBoost.">
+<link rel="icon" href="../images/favicon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#activities">Activities</a></li>
+      <li><a href="../index.html#feed">Feed</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Project</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: pm25">Beijing PM2.5 Forecasting</span></h1>
+    <p class="lede">A model that forecasts PM2.5 at 12 Beijing monitoring stations 24 hours ahead. I built it in R with <code>data.table</code> and XGBoost for a Kaggle competition.</p>
+
+    <figure>
+      <ol class="steps">
+        <li><strong>Stack</strong> Training and test hours go on one timeline per station, so lags line up.</li>
+        <li><strong>Features</strong> Citywide averages, 24 and 48 hour lags, and time of day as a cycle.</li>
+        <li><strong>Hold out</strong> Fit on the hours before March 2015, score the hours after.</li>
+        <li><strong>Refit</strong> Same settings on every training hour, then predict the test hours.</li>
+      </ol>
+    </figure>
+
+    <section>
+      <h2>Features</h2>
+      <p>Everything is built from readings available at the hour the forecast is made:</p>
+      <ul>
+        <li>the citywide average of each pollutant and weather reading at that hour, across all 12 stations</li>
+        <li>the same station’s readings 24 and 48 hours earlier</li>
+        <li>the 24-hour change in PM10, and the gap between a station’s PM10 and the city’s</li>
+        <li>hour and month as sine and cosine, so hour 23 sits next to hour 0 and December next to January</li>
+        <li>station and wind direction as indicator columns, with a flag for missing wind</li>
+      </ul>
+      <p>The target itself, PM2.5 24 hours ahead, is never lagged or averaged into a feature.</p>
+    </section>
+
+    <section>
+      <h2>Validation</h2>
+      <p>I used a temporal holdout instead of random folds. The model is fit on hours before March 1, 2015 and scored on the hours after, because random rows would let later hours leak into the fit.</p>
+      <p>Early stopping on that holdout picks the number of trees, stopping after 40 rounds without improvement. The holdout score is checked against a null model that always predicts the average from the fit period.</p>
+    </section>
+
+    <section>
+      <h2>Model</h2>
+      <p>Gradient boosted trees in XGBoost with squared-error loss, a learning rate of 0.05, depth 7, and row and column sampling at 0.8. After tuning, the model is refit on every training row with the chosen number of trees. Predictions are clipped at zero, since PM2.5 cannot be negative.</p>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>Competition</dt><dd>Kaggle</dd></div>
+      <div><dt>When</dt><dd>Jan 2026 to Apr 2026</dd></div>
+      <div><dt>Built with</dt><dd>R, <code>data.table</code>, XGBoost</dd></div>
+      <div><dt>Score</dt><dd>RMSE 72.85 on the public leaderboard</dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>
