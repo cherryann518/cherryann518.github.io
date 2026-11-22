@@ -1,0 +1,130 @@
+/* Resume page only.
+
+   The sheet copies Cherryann_Yang_Resume.pdf. The fonts are Latin Modern, the
+   open version of the LaTeX fonts in the PDF, and every size and gap below is
+   the PDF's own measurement in points, multiplied by --pt.
+
+   When the sheet has 34rem or more between its margins, --pt is 1/540 of that
+   width (the PDF has 540pt between its margins), so the page scales like a
+   picture and lines break where they do on paper. On a narrower sheet --pt is
+   fixed at a readable size and lines wrap wherever they need to. */
+
+@font-face { font-family: "Latin Modern Roman"; src: url(fonts/lmroman10-regular.woff) format("woff"); font-display: swap; }
+@font-face { font-family: "Latin Modern Roman"; src: url(fonts/lmroman10-bold.woff) format("woff"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Latin Modern Roman"; src: url(fonts/lmroman10-italic.woff) format("woff"); font-style: italic; font-display: swap; }
+@font-face { font-family: "Latin Modern Caps"; src: url(fonts/lmromancaps10-regular.woff) format("woff"); font-display: swap; }
+@font-face { font-family: "Latin Modern Mono"; src: url(fonts/lmmono10-regular.woff) format("woff"); font-display: swap; }
+@font-face { font-family: "Latin Modern Sign"; src: url(fonts/lmmath-sim.woff) format("woff"); unicode-range: U+223C; font-display: swap; }
+@font-face { font-family: "Latin Modern Roman 12"; src: url(fonts/lmroman12-bold-letters.woff) format("woff"); font-weight: 700; font-display: swap; }
+
+
+/* The sheet ------------------------------------------------------------- */
+
+.paper { container-type: inline-size; padding: 5.88%; text-rendering: geometricPrecision; }  /* half-inch margins on a letter page */
+
+.paper > * {
+  --pt: 0.0859rem;
+  font: calc(var(--pt) * 10.909) / calc(var(--pt) * 13.55) "Latin Modern Roman", "Latin Modern Sign", "Computer Modern", Georgia, serif;
+}
+@container (min-width: 34rem) {
+  .paper > * { --pt: calc(100cqi / 540); }
+}
+.paper :is(strong, em, code) { line-height: 0; }  /* bold, italic and code never push a line taller */
+
+/* The rest of the site has no bold and grays its headings. The sheet keeps the PDF's. */
+.paper :is(strong, b) { font-weight: 700; }
+.paper :is(h1, h2) { color: inherit; }
+.paper :is(h1, h2) { -webkit-font-smoothing: auto; }
+
+/* Name and links */
+.paper h1 {
+  margin-top: calc(var(--pt) * -5.53);
+  font-family: "Latin Modern Roman 12", "Latin Modern Roman", serif;
+  font-size: calc(var(--pt) * 24.787);
+  font-weight: 700;
+  line-height: calc(var(--pt) * 26);
+  letter-spacing: 0;
+  text-align: center;
+}
+.paper .links {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--pt) * 14.54);
+  margin-top: calc(var(--pt) * 0.57);
+  line-height: calc(var(--pt) * 13.6);
+}
+.paper a, .paper a:hover {
+  padding: 0;
+  background: none;
+  color: #2468b4;
+  text-decoration: underline max(1px, calc(var(--pt) * 0.4));
+  text-underline-offset: calc(var(--pt) * 0.95);
+}
+.paper a[href]:not(.btn)::after { content: none; }
+
+/* Section heads: small caps over a rule as wide as the sheet. The rule is a
+   shadow, so however thick the screen draws it, it never moves the text. */
+.paper section { margin-top: calc(var(--pt) * 8.61); }
+.paper .links + section { margin-top: calc(var(--pt) * 11.52); }
+.paper .extra { margin-top: calc(var(--pt) * 9.95); }
+.paper h2 {
+  margin-bottom: calc(var(--pt) * 7.34);
+  padding-bottom: calc(var(--pt) * 1.12);
+  box-shadow: 0 max(1px, calc(var(--pt) * 0.4)) #000;
+  font: 400 calc(var(--pt) * 11.955) / calc(var(--pt) * 14) "Latin Modern Caps", "Latin Modern Roman", serif;
+  letter-spacing: 0;
+}
+.paper .projects h2 { margin-bottom: calc(var(--pt) * 9.32); }
+.paper .skills h2 { margin-bottom: calc(var(--pt) * 3.89); }
+.paper .extra h2 { margin-bottom: calc(var(--pt) * 3.26); }
+
+/* Entries: a name and a place, a role and dates, then bullets. In the PDF the
+   rows start 5.45pt in and run 5.45pt past the rule, so they do here too. */
+.paper .entry { margin: 0 calc(var(--pt) * -5.45) 0 calc(var(--pt) * 5.45); }
+.paper .entry + .entry { margin-top: calc(var(--pt) * 4.97); }
+.paper .projects .entry + .entry { margin-top: calc(var(--pt) * 6.94); }
+.paper .row { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: calc(var(--pt) * 12); }
+.paper .row > :last-child { margin-left: auto; text-align: right; }
+.paper .row > :last-child > em { padding-right: calc(var(--pt) * 1.4); }
+
+/* Bullets and the last two sections are a size smaller (LaTeX's \small) */
+.paper ul, .paper .skills p, .paper .extra .row { font-size: calc(var(--pt) * 9.963); line-height: calc(var(--pt) * 11.955); }
+.paper ul { margin: calc(var(--pt) * -0.09) calc(var(--pt) * 5.45) 0 calc(var(--pt) * 9.28); }
+.paper li { position: relative; }
+.paper li + li { margin-top: calc(var(--pt) * 0.29); }
+.paper li::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--pt) * -8.78);
+  top: calc(var(--pt) * 5.37);
+  width: calc(var(--pt) * 2.6);
+  height: calc(var(--pt) * 2.6);
+  border-radius: 50%;
+  background: currentColor;
+}
+.paper .skills p, .paper .extra .row { margin-left: calc(var(--pt) * 5.45); }
+.paper .extra .row { line-height: calc(var(--pt) * 13.24); }
+.paper code { font-family: "Latin Modern Mono", monospace; font-size: 1em; }
+
+/* LaTeX leaves a little extra room after a colon and after italics */
+.paper li > strong:first-child, .paper .skills strong { margin-right: calc(var(--pt) * 1.11); }
+.paper li em { margin-right: calc(var(--pt) * 0.6); }
+
+
+/* The page around it ---------------------------------------------------- */
+
+/* The sheet's edge is drawn as inset shadows, so it takes no room from the
+   sheet and follows the pixel corners. */
+.paper { box-shadow: inset 0 0 0 var(--stroke) var(--ink); }
+
+/* The sheet needs the width, so until the window is very wide the download
+   button sits above it instead of in a third column. */
+@media (max-width: 89.99rem) {
+  main, .rail-first { max-width: calc(58rem + 2 * var(--pad)); }
+}
+@media (min-width: 64rem) and (max-width: 89.99rem) {
+  body { grid-template-columns: var(--side) minmax(0, 1fr); }
+  .side { grid-row: 1 / span 2; }
+  .rail-first { grid-column: 2; grid-row: 1; position: static; max-height: none; margin: var(--pad) var(--pad) 0; overflow: visible; }
+  main:has(+ .rail-first) { grid-column: 2; grid-row: 2; padding-right: var(--pad); }
+}

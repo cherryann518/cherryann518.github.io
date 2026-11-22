@@ -1,0 +1,543 @@
+/* Satoshi comes from Fontshare's own servers: its licence does not let the font files sit in a public repository. */
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500&display=swap");
+
+/* Cherryann Yang, portfolio
+
+   A few rules hold the whole site together:
+     - The site is one white block inside a dark pixel frame. The frame stays
+       put while the page scrolls. Square corners everywhere.
+     - Two voices. The pixel font (m3x6) is the loud one, kept for things with
+       substance: the headline and project titles. Satoshi is the quiet one
+       for everything else, and it is never bold. Put class="pixel" on a
+       heading to set it in pixels.
+     - Topic headings (Experience, Feed, Facts) are small and gray. They label
+       a part of the page; they are not the content.
+     - Colour is black, white and Classic Gray, lighter or darker. Nothing else.
+     - The small drawn things (photo frame, arrows, the Now dot) are built
+       from square dots, like the font. Every box has one square dot missing
+       from each corner, so nothing is perfectly sharp.
+     - Nothing tints until you hover.
+
+   Contents
+     1. Tokens        tones, type, spacing, icons
+     2. Base
+     3. Layout        frame, block, sidebar | page | floating block
+     4. Sidebar
+     5. Pieces        links, buttons, chips, the Now callout
+     6. Work page     headline, project blocks, experience rows
+     7. Inner pages   write-ups, facts, steps, feed
+     8. Opening       the screen that shows when you first arrive
+     9. Motion        everything that moves, in one place
+*/
+
+@font-face { font-family: "m3x6"; src: url(fonts/m3x6.ttf) format("truetype"); font-display: swap; }               /* by Daniel Linssen */
+@font-face { font-family: "Pixel Marks"; src: url(fonts/pixel-marks.woff) format("woff"); font-display: swap; }  /* the few marks m3x6 lacks */
+
+
+/* 1. Tokens ------------------------------------------------------------- */
+
+:root {
+  --ink: #000;
+  --paper: #fff;
+
+  /* Classic Gray (a Benjamin Moore paint) and its relatives. Every gray on
+     the site is one of these. site.js reads the hover and frame ones. */
+  --gray: #e3e1d8;          /* Classic Gray itself: hover dots, hover fills */
+  --gray-pale: #eeede7;     /* the second, fainter hover dot */
+  --gray-light: #f3f2ee;    /* sidebar, Now callout, step boxes */
+  --gray-dark: #cfcdc3;     /* the floating block */
+  --gray-text: #6b695f;     /* quiet text on white or light gray */
+  --gray-deep: #4d4b44;     /* quiet text on the floating block */
+  --night: #000;            /* the frame */
+  --night-1: #2c2b27;       /* its dots */
+  --night-2: #191815;
+
+  --stroke: 2px;            /* every drawn line, and one dot of the small icons */
+  --nick: 3px;              /* the square missing from each corner of a box (bigger boxes set their own) */
+
+  --text: "Satoshi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --cjk: "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+  --pixel: "m3x6", "Pixel Marks", var(--text);
+
+  /* Text sizes */
+  --small: 0.8125rem;  /* labels, chips, dates */
+  --body: 0.9375rem;
+  --lead: 1.25rem;     /* role titles, headings inside a write-up */
+  --name: clamp(1.3rem, 1.9vw, 1.75rem);  /* as big as the sidebar allows on one line */
+
+  /* Pixel sizes. m3x6 is drawn 16 dots tall, so it is only sharp at whole
+     multiples of 16px. */
+  --px-m: 3rem;        /* project titles */
+  --px-l: 4rem;        /* the headline, a project's own page */
+
+  --frame: clamp(0.5rem, 1.6vw, 1.5rem);                    /* how thick the frame is */
+  --edge: max(var(--frame), calc((100% - 96rem) / 2));      /* its sides, which widen on very wide screens */
+  --side: clamp(13rem, 19vw, 16rem);                        /* sidebar width */
+  --pad: clamp(1.25rem, 3vw, 2.5rem);
+  --step: 1.5rem;                                           /* the usual gap between things */
+
+  /* Pixel arrows, drawn on a grid of dots. Used as masks so they take the text colour. */
+  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h4v4H4V1H1zM3 1h1v1H3zM2 2h1v1H2zM1 3h1v1H1zM0 4h1v1H0z'/%3E%3C/svg%3E");
+  --arrow-go: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 5' shape-rendering='crispEdges'%3E%3Cpath d='M0 2h7v1H0zM4 0h1v1H4zM5 1h1v1H5zM5 3h1v1H5zM4 4h1v1H4z'/%3E%3C/svg%3E");
+}
+
+
+/* 2. Base --------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--night); scroll-padding-top: calc(var(--frame) + var(--pad)); }
+
+body {
+  display: grid;
+  align-content: start;
+  min-height: calc(100vh - 2 * var(--frame));
+  margin: var(--frame) var(--edge);
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--body) / 1.55 var(--text);
+}
+
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+small { font-size: inherit; }
+strong, b { font-weight: 500; }
+:focus-visible { outline: var(--stroke) solid var(--ink); outline-offset: 2px; }
+
+/* Pixel corners: every box loses one square dot from each corner. To give a
+   new box the same corners, add its selector to this list. */
+.btn, .chips li, .side nav a, .callout, .rail, .feed, .touch, .post, .steps li, .frame, .glow, .paper {
+  clip-path: polygon(
+    var(--nick) 0, calc(100% - var(--nick)) 0, calc(100% - var(--nick)) var(--nick), 100% var(--nick),
+    100% calc(100% - var(--nick)), calc(100% - var(--nick)) calc(100% - var(--nick)), calc(100% - var(--nick)) 100%, var(--nick) 100%,
+    var(--nick) calc(100% - var(--nick)), 0 calc(100% - var(--nick)), 0 var(--nick), var(--nick) var(--nick));
+}
+.callout, .rail, .feed, .touch, .frame, .paper { --nick: 4px; }
+.glow { --nick: 6px; }  /* one of its own dots */
+.btn:focus-visible, .side nav a:focus-visible { outline-color: currentColor; outline-offset: -5px; }  /* inside, where the corners cannot clip it */
+code { font: 0.92em var(--mono); }
+[lang="zh-Hant"] { font-family: var(--cjk); }
+
+/* Topic headings and small notes: quiet, gray, never bold. */
+h1, h2, .label, .meta, figcaption, .role, .clock, .facts dt, .steps li::before, .chips small, .credit {
+  color: var(--gray-text);
+  font-size: var(--small);
+  font-weight: 400;
+  line-height: 1.45;
+}
+h3 { font-size: var(--body); font-weight: 400; }
+
+/* Pixel headings. The letters sit small inside their line, so lines are set
+   close, and one dot comes out of each word gap. */
+.pixel {
+  color: var(--ink);
+  font-family: var(--pixel);
+  line-height: 0.69;
+  word-spacing: -0.0625em;
+  -webkit-font-smoothing: none;
+}
+h1.pixel { font-size: var(--px-l); text-wrap: balance; }
+h2.pixel { font-size: var(--px-m); }
+
+
+/* 3. Layout ------------------------------------------------------------- */
+
+/* The frame. This box is the window the page shows through; its huge shadow
+   blacks out everything around it. site.js lays moving dots over the black. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: var(--frame) var(--edge);
+  z-index: 50;
+  box-shadow: 0 0 0 100vmax var(--night);
+  pointer-events: none;
+}
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 51;
+  width: 100%;
+  height: 100%;
+  --n: 6px;  /* one dot of the frame. The window loses two steps of these at each corner */
+  image-rendering: pixelated;
+  pointer-events: none;
+  --l: var(--edge);
+  --r: calc(100% - var(--edge));
+  --t: var(--frame);
+  --b: calc(100% - var(--frame));
+  clip-path: polygon(evenodd,
+    0 0, 100% 0, 100% 100%, 0 100%, 0 0,
+    calc(var(--l) + 2 * var(--n)) var(--t),
+    calc(var(--r) - 2 * var(--n)) var(--t),
+    calc(var(--r) - 2 * var(--n)) calc(var(--t) + var(--n)),
+    calc(var(--r) - var(--n)) calc(var(--t) + var(--n)),
+    calc(var(--r) - var(--n)) calc(var(--t) + 2 * var(--n)),
+    var(--r) calc(var(--t) + 2 * var(--n)),
+    var(--r) calc(var(--b) - 2 * var(--n)),
+    calc(var(--r) - var(--n)) calc(var(--b) - 2 * var(--n)),
+    calc(var(--r) - var(--n)) calc(var(--b) - var(--n)),
+    calc(var(--r) - 2 * var(--n)) calc(var(--b) - var(--n)),
+    calc(var(--r) - 2 * var(--n)) var(--b),
+    calc(var(--l) + 2 * var(--n)) var(--b),
+    calc(var(--l) + 2 * var(--n)) calc(var(--b) - var(--n)),
+    calc(var(--l) + var(--n)) calc(var(--b) - var(--n)),
+    calc(var(--l) + var(--n)) calc(var(--b) - 2 * var(--n)),
+    var(--l) calc(var(--b) - 2 * var(--n)),
+    var(--l) calc(var(--t) + 2 * var(--n)),
+    calc(var(--l) + var(--n)) calc(var(--t) + 2 * var(--n)),
+    calc(var(--l) + var(--n)) calc(var(--t) + var(--n)),
+    calc(var(--l) + 2 * var(--n)) calc(var(--t) + var(--n)),
+    calc(var(--l) + 2 * var(--n)) var(--t));
+}
+
+main { min-width: 0; padding: var(--pad); container-type: inline-size; }
+
+/* The floating block: a gray box beside the page (under it on small screens). */
+.rail { min-width: 0; margin: 0 var(--pad) var(--pad); padding: 1.25rem; background: var(--gray-dark); }
+.rail :is(h2, dt, .meta, .credit) { color: var(--gray-deep); }
+.rail:has(> .btn:only-child) { padding: 0; background: none; }  /* just a button, no box */
+.side { order: -2; }
+.rail-first { order: -1; margin: var(--pad) var(--pad) 0; }      /* facts sit above the write-up until there is room beside it */
+
+@media (min-width: 56rem) {
+  body {
+    grid-template-columns: var(--side) minmax(0, 1fr);
+    background: linear-gradient(90deg, var(--gray-light) var(--side), var(--paper) var(--side));  /* the sidebar's gray runs the full height */
+  }
+  .side { grid-row: 1 / span 2; }
+  main, .rail { grid-column: 2; }
+  .rail-first { grid-row: 1; }
+  main:has(+ .rail-first) { grid-row: 2; }
+}
+
+@media (min-width: 64rem) {
+  body { grid-template-columns: var(--side) minmax(0, 1fr) clamp(15rem, 23vw, 20rem); }
+  .side { grid-row: 1; }
+  main, main:has(+ .rail-first) { grid-column: 2; grid-row: 1; padding-right: var(--step); }
+  .rail, .rail-first {
+    grid-column: 3;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--frame) + var(--pad));
+    align-self: start;
+    max-height: calc(100vh - 2 * var(--frame) - 2 * var(--pad));
+    margin: var(--pad) var(--pad) var(--pad) 0;
+    overflow-y: auto;
+  }
+}
+
+
+/* 4. Sidebar ------------------------------------------------------------- */
+
+.side {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: center;
+  padding: 1rem var(--pad);
+  background: var(--gray-light);
+}
+
+/* The photo's frame, built from 4px dots like the frame around the page: a
+   checkered band two dots wide, then a black line, then the photo. The
+   round() lines snap its size to whole dots so the pattern stays crisp. */
+.frame {
+  --dot: 4px;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: block;
+  width: 4.75rem;
+  padding: calc(var(--dot) * 2);
+  container-type: inline-size;
+  background: repeating-conic-gradient(var(--ink) 0 25%, transparent 0 50%) 0 0 / calc(var(--dot) * 2) calc(var(--dot) * 2);
+}
+.portrait { width: 100%; aspect-ratio: 5 / 6; height: round(nearest, 120cqi, var(--dot)); object-fit: cover; border: var(--dot) solid var(--ink); }
+
+.name { grid-column: 2; font-size: 1.375rem; line-height: 1.1; }
+.name a { text-decoration: none; }
+.role, .clock { display: none; }
+.clock time:not(:empty)::before { content: ", "; }
+
+.side nav { grid-column: 2; margin-left: -0.6rem; }
+.side nav ul { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.side nav a { display: block; padding: 0.3rem 0.6rem; text-decoration: none; }
+.side nav a:hover { background: var(--gray); }
+.side nav a[aria-current] { background: var(--ink); color: var(--paper); }
+
+.contact { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.1rem 1.1rem; margin-top: 0.9rem; font-size: var(--small); }
+.contact a { text-decoration-thickness: var(--stroke); text-underline-offset: 0.25em; }
+.contact a:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
+
+@media (min-width: 56rem) {
+  .side {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: start;
+    position: sticky;
+    top: var(--frame);
+    min-height: calc(100vh - 2 * var(--frame));
+    padding: var(--pad) var(--step);
+    background: none;  /* the block paints this column gray */
+  }
+  .frame { width: 100%; width: round(down, 100%, 8px); }  /* as wide as the sidebar allows */
+  .name { margin-top: 1.25rem; font-size: var(--name); }
+  .role, .clock { display: block; }
+  .role { margin-top: 0.5rem; }
+  .side nav { margin: var(--step) 0 0 -0.6rem; }
+  .side nav ul { display: block; }
+  .side nav li + li { margin-top: 0.15rem; }
+  .side nav a { padding: 0.4rem 0.6rem; }
+  .contact { display: block; margin-top: auto; padding-top: var(--step); line-height: 2; }
+}
+
+
+/* 5. Pieces --------------------------------------------------------------- */
+
+/* Links in running text: underlined, with a gray fill on hover. */
+:where(main, .rail) a:not(.btn) { text-decoration-thickness: var(--stroke); text-underline-offset: 0.25em; }
+:where(main, .rail) a:not(.btn):hover { background: var(--gray); }
+
+/* A pixel arrow after anything that leaves the page: outside links, and a
+   button with class="go". */
+.go::after, :where(main, .rail) a[href^="http"]:not(.btn)::after {
+  content: "";
+  display: inline-block;
+  width: calc(var(--stroke) * 5);
+  height: calc(var(--stroke) * 5);
+  margin-left: 0.45em;
+  background: currentColor;
+  -webkit-mask: var(--arrow-out) center / contain no-repeat;
+  mask: var(--arrow-out) center / contain no-repeat;
+}
+
+.btn { display: inline-block; padding: 0.5rem 0.9rem; background: var(--ink); color: var(--paper); text-decoration: none; }
+.btn:hover { background: var(--gray); color: var(--ink); }
+
+/* Chips: filled tags, no outline. */
+.chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.chips li { padding: 0.1rem 0.5rem; background: var(--paper); font-size: var(--small); line-height: 1.5; }
+.chips li:hover { background: var(--ink); color: var(--paper); }
+.chips small { color: inherit; opacity: 0.6; }
+
+/* A callout: a gray box with a flashing pixel dot beside its title. The dot
+   is drawn on a 7 by 7 grid, each square one --stroke wide. */
+.callout { display: grid; gap: 0.25rem 1.25rem; max-width: 38rem; padding: 0.9rem 1rem; background: var(--gray-light); }
+.callout .tag { display: flex; align-items: center; gap: 0.5rem; }
+.dot { flex: none; width: calc(var(--stroke) * 7); height: calc(var(--stroke) * 7); fill: var(--ink); shape-rendering: crispEdges; }
+
+@container (min-width: 30rem) {
+  .callout { grid-template-columns: auto minmax(0, 1fr); }
+}
+
+
+/* 6. Work page ------------------------------------------------------------ */
+
+.intro h1 { max-width: 15em; }
+.lede { max-width: 38rem; margin-top: 1rem; }
+.intro .callout { margin-top: var(--step); }
+.intro .btn { margin-top: var(--step); }
+
+/* Project blocks: two across when there is room, no lines between them.
+   Hovering one brings up a cloud of pale dots behind it (site.js draws them)
+   and a white edge around its words so they stay easy to read. The whole
+   block is the link. The blocks hang a little outside the column so their
+   text lines up with the headline. */
+.blocks { display: grid; gap: 0.5rem; margin: 2rem -1.25rem 0; }
+.block { position: relative; isolation: isolate; display: flex; flex-direction: column; padding: 1.25rem; }
+.glow { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; image-rendering: pixelated; opacity: 0; }
+.block:hover .glow, .block:focus-within .glow { opacity: 1; }
+.block:hover :is(.label, .meta), .block:focus-within :is(.label, .meta) { color: var(--ink); }
+.block:hover :is(.label, p), .block:focus-within :is(.label, p) {
+  text-shadow: 0 0 2px var(--paper), 0 0 2px var(--paper), 0 0 3px var(--paper), 0 0 3px var(--paper), 0 0 4px var(--paper), 0 0 5px var(--paper);
+}
+.block:hover h2, .block:focus-within h2 {  /* a hard edge, one dot wide, for the pixel title */
+  text-shadow: 3px 0 var(--paper), -3px 0 var(--paper), 0 3px var(--paper), 0 -3px var(--paper), 3px 3px var(--paper), -3px 3px var(--paper), 3px -3px var(--paper), -3px -3px var(--paper);
+}
+
+.block h2 { padding-right: 2.5rem; margin-top: -0.2rem; }  /* the pixel letters carry their own space above */
+.block h2 a, .block h2 a:hover { background: none; text-decoration: none; }
+.block h2 a::before { content: ""; position: absolute; inset: 0; }  /* stretches the link over the block */
+.block h2 a::after {  /* the pixel arrow in the corner */
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  right: 1.25rem;
+  width: calc(var(--stroke) * 7);
+  height: calc(var(--stroke) * 5);
+  background: currentColor;
+  -webkit-mask: var(--arrow-go) center / contain no-repeat;
+  mask: var(--arrow-go) center / contain no-repeat;
+}
+.block h2 + p { max-width: 34rem; margin-top: 0.6rem; }
+.block .meta { margin-top: auto; padding-top: 1rem; }
+
+@container (min-width: 34rem) {
+  .blocks { grid-template-columns: 1fr 1fr; }
+}
+
+/* Experience rows: the title on the left, the place and dates on the right. */
+.entries, main .feed, .touch { max-width: 44rem; margin-top: 3rem; }
+.entries > h2 { margin-bottom: 1rem; }
+.entries li { display: grid; gap: 0.15rem 1.5rem; }
+.entries li + li { margin-top: 1.25rem; }
+.entries .label { margin: 2rem 0 1rem; }  /* a smaller heading inside the list, like Before Penn State */
+.entries li :is(h2, h3) { color: var(--ink); font-size: var(--lead); line-height: 1.3; }
+
+@container (min-width: 30rem) {
+  .entries li { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .entries .meta { grid-column: 2; grid-row: 1 / span 2; max-width: 16rem; padding-top: 0.3rem; text-align: right; }
+  .entries li > p:not(.meta) { grid-column: 1; }
+}
+
+/* Stack & tools: groups of chips. */
+.stack h3 { margin: 1rem 0 0.4rem; color: var(--gray-deep); font-size: var(--small); }
+
+
+/* 7. Inner pages ---------------------------------------------------------- */
+
+.sheet .label + h1 { margin-top: -0.1rem; }  /* the pixel letters carry their own space above */
+.sheet section { max-width: 38rem; margin-top: 2.5rem; }
+.sheet section > h2 { margin-bottom: 0.6rem; color: var(--ink); font-size: var(--lead); }  /* a heading inside a write-up */
+.sheet section p + p { margin-top: 0.9rem; }
+.sheet section ul { margin-top: 0.7rem; }
+.sheet section ul + p { margin-top: 0.9rem; }
+.sheet section li { margin-left: 1.1em; list-style: disc; }
+.sheet section li + li { margin-top: 0.35rem; }
+.sheet .entries { max-width: 38rem; margin-top: 1.25rem; }
+.sheet .entries li { margin-left: 0; list-style: none; }
+.sheet .entries li + li { margin-top: 1.25rem; }
+
+.facts dl { margin-top: 0.9rem; }
+.facts dl div + div { margin-top: 0.9rem; }
+.facts dd { margin-top: 0.1rem; overflow-wrap: anywhere; }
+.touch { padding: 1.25rem; background: var(--gray-light); }
+.touch p { margin: 0.4rem 0 1rem; }
+
+.more { max-width: 38rem; margin-top: 3rem; }
+.more ul { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin-top: 0.6rem; }
+
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .facts dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1rem 1.25rem; }
+  .facts dl div + div { margin-top: 0; }
+}
+
+figure { margin-top: 2rem; }
+figure img { width: 100%; }
+figcaption { margin-top: 0.6rem; }
+
+/* The step diagrams on project pages: four gray boxes in a row. */
+.steps { display: grid; gap: var(--stroke); counter-reset: step; }
+.steps li { padding: 0.7rem 0.85rem 0.9rem; background: var(--gray-light); font-size: var(--small); line-height: 1.45; counter-increment: step; }
+.steps li::before { content: counter(step); display: block; margin-bottom: 0.3rem; }
+.steps strong { display: block; margin-bottom: 0.15rem; font-size: var(--body); }
+
+@container (min-width: 36rem) {
+  .steps { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Feed: short white rows in a gray block. Hover or tap a row and it
+   opens to show its pictures and a few lines. */
+.feed { padding: 1.25rem; background: var(--gray-dark); }
+.feed h2 { margin-bottom: 0.8rem; color: var(--gray-deep); }
+.post { padding: 0.65rem 0.8rem; background: var(--paper); }
+.post + .post { margin-top: var(--stroke); }
+.post:focus { outline: 0; }
+.post .meta { color: var(--gray-text); }
+.extra { display: grid; grid-template-rows: 0fr; }
+.extra > div { min-height: 0; overflow: hidden; }
+.post:hover .extra, .post:focus .extra, .post:focus-within .extra { grid-template-rows: 1fr; }
+.photo { width: 100%; margin-top: 0.7rem; }
+.photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: var(--stroke); margin-top: 0.7rem; }  /* pictures side by side */
+.photos .photo { height: 100%; margin: 0; aspect-ratio: 4 / 3; object-fit: cover; }
+.extra p { max-width: 36rem; margin-top: 0.6rem; font-size: var(--small); line-height: 1.45; }
+.extra .credit { margin-top: 0.25rem; color: var(--gray-text); }
+
+
+/* 8. Opening -------------------------------------------------------------- */
+
+/* The first time someone lands on the Work page in a visit, the block is
+   blank, types a line, then shows the page. A script in the page's <head>
+   adds .opening to <html>; site.js types the line and takes it away. */
+html.opening { overflow: hidden; }
+html.opening::before, .opening-screen {
+  position: fixed;
+  inset: var(--frame) var(--edge);
+  z-index: 40;
+  background: var(--paper);
+}
+html.opening::before { content: ""; }
+.opening-screen {
+  z-index: 41;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  font: var(--px-l) / 0.69 var(--pixel);
+  word-spacing: -0.0625em;
+  text-align: center;
+  -webkit-font-smoothing: none;
+}
+.opening-screen.done { opacity: 0; pointer-events: none; }
+.caret::after { content: ""; display: inline-block; width: 0.25em; height: 0.07em; margin-left: 0.07em; background: currentColor; }
+
+
+/* 9. Motion --------------------------------------------------------------- */
+
+/* Nothing here is needed to read the site. People who ask their device for
+   less motion get none of it. */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Moving between pages: the frame and sidebar hold still, the page
+     cross-fades, and a project's title glides from its block to the top of
+     its page. (Browsers only do this when the site is served, not opened as
+     files.) */
+  html { scroll-behavior: smooth; }  /* the menu glides to its part of the page */
+  @view-transition { navigation: auto; }
+  .side { view-transition-name: side; }
+  main { view-transition-name: page; }
+  .rail { view-transition-name: rail; }
+  .backdrop { view-transition-name: frame; }
+  .glide { display: inline-block; }
+  ::view-transition-old(page), ::view-transition-old(rail) { animation: 0.16s ease-in both leave; }
+  ::view-transition-new(page), ::view-transition-new(rail) { animation: 0.3s 0.08s cubic-bezier(0.2, 0.7, 0.2, 1) both arrive; }
+  ::view-transition-group(*) { animation-duration: 0.45s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  /* Opening the Work page: the blocks arrive one after another (after the
+     opening screen, if it is showing). */
+  .block { animation: 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards arrive; animation-delay: calc(150ms + var(--i, 0) * 70ms); }
+  .block:nth-child(2) { --i: 1; }
+  .block:nth-child(3) { --i: 2; }
+  .block:nth-child(4) { --i: 3; }
+  html.opening .block { animation: none; }
+  .caret::after { animation: 1s steps(1) infinite blink; }
+  .opening-screen { transition: opacity 0.4s; }
+
+  /* The Now dot flashes black, then white. */
+  .dot { animation: 1.4s steps(1) infinite flash; }
+
+  /* Hover: the dots fade in, the arrow nudges, a feed row opens. */
+  .glow { transition: opacity 0.35s; }
+  .block h2 a::after { transition: transform 0.2s; }
+  .block:hover h2 a::after { transform: translateX(4px); }
+  .extra { transition: grid-template-rows 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .btn, .chips li, .side nav a, .contact a, :where(main, .rail) a { transition: background-color 0.15s, color 0.15s; }
+
+  /* The research loop on its own page: each step darkens in turn. */
+  .steps.cycle li { animation: 6s infinite turn; }
+  .steps.cycle li:nth-child(2) { animation-delay: 1.5s; }
+  .steps.cycle li:nth-child(3) { animation-delay: 3s; }
+  .steps.cycle li:nth-child(4) { animation-delay: 4.5s; }
+
+  @keyframes arrive { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes leave { to { opacity: 0; } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes flash { 50% { fill: var(--paper); } }
+  @keyframes turn {
+    0%, 21% { background-color: var(--gray-dark); }
+    25%, 100% { background-color: var(--gray-light); }
+  }
+}
