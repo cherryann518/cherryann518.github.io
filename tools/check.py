@@ -37,7 +37,7 @@ class Page(HTMLParser):
         for key in ("href", "src"):
             if key in a and tag in ("a", "img", "link", "script"):
                 self.refs.append(a[key] or "")
-        if tag == "img" and not a.get("alt"):
+        if tag == "img" and "alt" not in a:  # alt="" is fine: it marks a picture as decoration
             self.problems.append("image without alt text")
         if re.fullmatch(r"h[1-6]", tag):
             self.headings.append(int(tag[1]))
@@ -96,7 +96,7 @@ def main():
                 if ref[1:] not in page.ids:
                     problems.append(f"nothing on the page has id {ref}")
                 continue
-            target = (path.parent / ref.split("#")[0]).resolve()
+            target = (path.parent / ref.split("#")[0].split("?")[0]).resolve()
             if not ref or not target.is_file():
                 problems.append(f"broken path: {ref!r}")
 

@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cherryann Yang</title>
 <meta name="description" content="Cherryann Yang studies Applied Data Science at Penn State. She builds AI systems and tests whether people can trust them.">
-<link rel="icon" href="images/favicon.png">
+<link rel="icon" href="favicon.ico?v=3" sizes="any">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="stylesheet" href="styles.css">
 <!-- Shows the opening screen the first time someone lands here in a visit. The rest is in site.js. -->
 <script>if (!sessionStorage.getItem("entered") && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("opening");</script>
@@ -20,8 +23,8 @@
   <nav aria-label="Site"><ul>
       <li><a href="index.html#top" aria-current="page">Work</a></li>
       <li><a href="index.html#experience">Experience</a></li>
-      <li><a href="index.html#activities">Activities</a></li>
       <li><a href="index.html#highlights">Highlights</a></li>
+      <li><a href="index.html#extracurriculars">Extracurriculars</a></li>
     </ul></nav>
   <ul class="contact">
     <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
@@ -33,7 +36,7 @@
 <main>
   <section class="intro">
     <h1 class="pixel">I build AI systems and test whether people can trust them.</h1>
-    <p class="lede">I’m an Applied Data Science student at Penn State (class of 2028) and a research assistant in the PLAINTEXT Lab.</p>
+    <p class="lede">I’m an Applied Data Science student at Penn State, with minors in Psychology and Economics.</p>
 
     <!-- Now: what I'm up to these days. The dot is drawn on a 7 by 7 grid and flashes. -->
     <div class="callout">
@@ -49,6 +52,7 @@
     <article class="block">
       <p class="label">Research</p>
       <h2 class="pixel"><a href="work/knowledge-curation.html"><span class="glide" style="view-transition-name: curation">Continuous Knowledge Curation</span></a></h2>
+      <ul class="chips tags"><li>Python</li><li>LM Studio</li><li>SBERT</li><li>SQLite</li></ul>
       <p>Agentic pipelines that search for research papers in rounds. Three locally hosted language models refine the queries and judge relevance across more than 2,000 papers.</p>
       <p class="meta">PLAINTEXT Lab, Penn State, 2026 to present</p>
     </article>
@@ -56,6 +60,7 @@
     <article class="block">
       <p class="label">Project</p>
       <h2 class="pixel"><a href="work/gaia-agent.html"><span class="glide" style="view-transition-name: gaia">GAIA Tool-Using Agent</span></a></h2>
+      <ul class="chips tags"><li>Python</li><li>smolagents</li><li>Hugging Face Spaces</li><li>Groq</li></ul>
       <p>A <code>smolagents</code> CodeAgent for the GAIA eval, with tools for web and Wikipedia search, YouTube transcripts, and attached files.</p>
       <p class="meta">Hugging Face Agents Course, 2026</p>
     </article>
@@ -63,6 +68,7 @@
     <article class="block">
       <p class="label">Project</p>
       <h2 class="pixel"><a href="work/beijing-pm25.html"><span class="glide" style="view-transition-name: pm25">Beijing PM2.5 Forecasting</span></a></h2>
+      <ul class="chips tags"><li>R</li><li>data.table</li><li>XGBoost</li></ul>
       <p>A model that forecasts PM2.5 at 12 Beijing stations 24 hours ahead, built in R with <code>data.table</code> and XGBoost.</p>
       <p class="meta">Kaggle, 2026</p>
     </article>
@@ -70,98 +76,142 @@
     <article class="block">
       <p class="label">Project</p>
       <h2 class="pixel"><a href="work/antibody-prediction.html"><span class="glide" style="view-transition-name: antibody">Antibody Level Prediction</span></a></h2>
+      <ul class="chips tags"><li>R</li><li>data.table</li></ul>
       <p>Clinical features engineered in R with temporal constraints, so post-sample events cannot leak into predictions.</p>
       <p class="meta">Kaggle, 2026</p>
     </article>
   </div>
 
-  <!-- Experience: the title on the left, the place and dates on the right. -->
+  <!-- Experience: the title on the left, the place and dates on the right, tools under the title. -->
   <section class="entries" id="experience">
     <h2>Experience</h2>
     <ul>
       <li>
         <h3>Undergraduate Research Assistant</h3>
         <p class="meta">PLAINTEXT Lab, College of IST, Penn State<br>May 2026 to present</p>
+        <ul class="chips tags"><li>Python</li><li>LM Studio</li><li>SBERT</li><li>SQLite</li></ul>
         <p>Agentic pipelines for continuous knowledge curation.</p>
       </li>
       <li>
         <h3>Learning Assistant</h3>
         <p class="meta">College of IST, Penn State<br>Aug 2026 to present</p>
+        <ul class="chips tags"><li>Python</li><li>Exploratory analysis</li><li>Regression</li><li>Intro ML</li></ul>
         <p>Labs and office hours for DS 200, the introductory data science course.</p>
       </li>
       <li>
         <h3>AI Engineer Intern</h3>
         <p class="meta">Growise, Taipei<br>May 2025 to Aug 2025</p>
+        <ul class="chips tags"><li>Python</li><li>Selenium</li><li>Web scraping</li></ul>
         <p>Scraping pipelines in Python, and testing the company’s AI crawler against client requests.</p>
       </li>
     </ul>
   </section>
 
-  <!-- Activities: same rows as Experience. -->
-  <section class="entries" id="activities">
-    <h2>Activities</h2>
-    <ul>
-      <li><h3>IST Diplomat</h3><p class="meta">College of IST<br>2026</p></li>
-      <li><h3>Event Chair</h3><p class="meta">Penn State Asian Pacific Islander Desi American (APIDA) Caucus<br>2026</p></li>
-      <li><h3>Healthcare Initiative Project Solution Winner</h3><p class="meta">Penn State Diversity in Healthcare Conference<br>2026</p></li>
-      <li><h3>Member of Oriana Singers</h3><p class="meta">Penn State School of Music<br>2024 to 2025</p></li>
-    </ul>
-  </section>
-
-  <!-- Highlights: one <article class="post"> per post, newest first. Each is a short row until you
-       hover or tap it. Pictures go in images/feed/ and into the post as <img class="photo">. -->
+  <!-- Highlights: moments, in my own words, newest first. One <article class="post"> each.
+       A post is a title, a date and a small picture until you hover or tap it.
+       Pictures go in images/feed/. The first <img class="thumb"> is the small one. -->
   <section class="feed" id="highlights">
     <h2>Highlights</h2>
-  <article class="post" tabindex="0">
-    <h3>AI in Research Symposium</h3>
-    <p class="meta">Oct 2026</p>
-    <div class="extra"><div>
-      <div class="photos">
-        <img class="photo" src="images/feed/symposium-presenting.webp" width="960" height="540" alt="Cherryann talking someone through the poster at the symposium." loading="lazy">
-        <img class="photo" src="images/feed/symposium-poster.webp" width="960" height="720" alt="Cherryann standing next to the poster." loading="lazy">
-      </div>
-      <p class="credit">First photo: Penn State College of IST</p>
-      <p>Presented our poster, From Scripted to Agentic Continuous Knowledge Curation, at the College of IST’s first AI in Research Symposium. It asks how much AI involvement is actually useful when you’re trying to keep a research collection up to date.</p>
-      <p>I co-developed the scripted and LLM-assisted pipelines, the baseline for the agentic versions we’re building now. I was one of the only undergrads in the room, and I learned a lot.</p>
-      <p><a href="https://lnkd.in/p/eCC8hGKp">Post on LinkedIn</a></p>
-    </div></div>
-  </article>
-  <article class="post" tabindex="0">
-    <h3>Diversity in Healthcare Conference</h3>
-    <p class="meta">2026</p>
-    <div class="extra"><div>
-      <p>Our team, Smiles Start Here, won the conference’s 2026 Solution Phase and $3,000 to turn the idea into a real community project. This summer it became a booth at the Centre County Grange Fair, with dental education games, care kits and free dental screenings for kids.</p>
-      <p><a href="https://lnkd.in/p/eQfupZKZ">Post on LinkedIn</a></p>
-    </div></div>
-  </article>
-  <article class="post" tabindex="0">
-    <h3>APIDA Caucus</h3>
-    <p class="meta">2026</p>
-    <div class="extra"><div>
-      <p>Event Chair for Penn State’s Asian Pacific Islander Desi American Caucus.</p>
-    </div></div>
-  </article>
-  <article class="post" tabindex="0">
-    <h3>Taiwan AI Future Commerce Expo</h3>
-    <p class="meta">2025</p>
-    <div class="extra"><div>
-      <p>Showed Growise’s crawler to industry visitors as an exhibitor.</p>
-    </div></div>
-  </article>
     <article class="post" tabindex="0">
-      <h3>Music Teacher Assistant, Dalcroze Society of Taiwan</h3>
-      <p class="meta">2023 to 2024</p>
+      <h3>I presented our poster at the AI in Research Symposium!</h3>
+      <p class="meta">Oct 2026</p>
+      <img class="thumb" src="images/feed/symposium-presenting.webp" width="960" height="540" alt="" loading="lazy">
       <div class="extra"><div>
-        <p>Piano and music theory for students aged 9 to 15, and translating for a French-speaking professor.</p>
+        <div class="photos">
+          <img class="photo" src="images/feed/symposium-presenting.webp" width="960" height="540" alt="Cherryann talking someone through the poster at the symposium." loading="lazy">
+          <img class="photo" src="images/feed/symposium-poster.webp" width="960" height="720" alt="Cherryann standing next to the poster." loading="lazy">
+        </div>
+        <p class="credit">First photo: Penn State College of IST</p>
+        <p>Our poster, From Scripted to Agentic Continuous Knowledge Curation, was at the College of IST’s first AI in Research Symposium. It asks how much AI involvement is actually useful when you’re trying to keep a research collection up to date.</p>
+        <p>I co-developed the scripted and LLM-assisted pipelines, the baseline for the agentic versions we’re building now. I was one of the only undergrads in the room, and I learned a lot.</p>
+        <p><a href="https://lnkd.in/p/eCC8hGKp">Post on LinkedIn</a></p>
       </div></div>
     </article>
     <article class="post" tabindex="0">
-      <h3>Exhibition Coordinator, VIS@betterworld lab</h3>
-      <p class="meta">2023</p>
+      <h3>I got accepted into the IST Diplomats Fall 2026 cohort!</h3>
+      <p class="meta">Fall 2026</p>
+      <img class="thumb" src="images/feed/ist-diplomat.webp" width="886" height="886" alt="" loading="lazy">
       <div class="extra"><div>
-        <p>Ran the Semester Public School Fair, the public exhibition of student work, with 200 students and their schedule to manage.</p>
+        <div class="photos">
+          <img class="photo" src="images/feed/ist-diplomat.webp" width="886" height="886" alt="A badge that reads: I’m in! IST Diplomats, Penn State College of Information Sciences and Technology, Fall 2026 cohort." loading="lazy">
+        </div>
       </div></div>
     </article>
+    <article class="post" tabindex="0">
+      <h3>Our team won the Solution Phase at the Diversity in Healthcare Conference!</h3>
+      <p class="meta">Mar 2026</p>
+      <img class="thumb" src="images/feed/dhc-team.webp" width="960" height="640" alt="" loading="lazy">
+      <div class="extra"><div>
+        <div class="photos">
+          <img class="photo" src="images/feed/dhc-team.webp" width="960" height="640" alt="The team standing with the judges in front of the conference slide." loading="lazy">
+          <img class="photo" src="images/feed/dhc-title.webp" width="960" height="541" alt="The title slide: Bridging the Gap in Preventative Care, Smiles Start Here Program." loading="lazy">
+        </div>
+        <p>Smiles Start Here is our program for getting preventative dental care to kids in Centre County. We were picked as the 2026 Solution Phase winner and awarded $3,000 to make it real.</p>
+        <p>Over the summer it became a booth at the Centre County Grange Fair, with dental education games, care kits and free dental screenings for kids.</p>
+        <p><a href="https://lnkd.in/p/eQfupZKZ">Post on LinkedIn</a></p>
+      </div></div>
+    </article>
+    <article class="post" tabindex="0">
+      <h3>I exhibited with Growise at the AI Taiwan Future Commerce Expo</h3>
+      <p class="meta">Jun 2025</p>
+      <img class="thumb" src="images/feed/growise-expo.webp" width="960" height="960" alt="" loading="lazy">
+      <div class="extra"><div>
+        <div class="photos">
+          <img class="photo" src="images/feed/growise-expo.webp" width="960" height="960" alt="The Growise booth at the expo, with visitors talking to the team at the counter." loading="lazy">
+        </div>
+        <p>Three days at the Taipei Expo Dome, showing Growise’s crawler to industry visitors as an exhibitor.</p>
+      </div></div>
+    </article>
+    <article class="post" tabindex="0">
+      <h3>I interpreted for a visiting professor at the Dalcroze international workshop</h3>
+      <p class="meta">Summer 2023</p>
+      <img class="thumb" src="images/feed/dalcroze-interpreting.webp" width="960" height="541" alt="" loading="lazy">
+      <div class="extra"><div>
+        <div class="photos">
+          <img class="photo" src="images/feed/dalcroze-interpreting.webp" width="960" height="541" alt="Cherryann holding a microphone and interpreting next to the professor, with the class sitting on the floor." loading="lazy">
+          <img class="photo" src="images/feed/dalcroze-workshop.webp" width="960" height="720" alt="The workshop from the back of the room: the professor by a grand piano, Cherryann beside him, teachers sitting on the floor." loading="lazy">
+        </div>
+        <p>Professor Iramar Rodrigues came from Switzerland to teach the 37th Dalcroze Eurhythmics International Workshop, run by the Dalcroze Society of Taiwan. I helped with French translation, in and outside the classroom. At the Tainan session he picked me to interpret for him.</p>
+        <p><a href="https://www.facebook.com/share/p/1Cp1eHGUks/">Post on Facebook</a></p>
+      </div></div>
+    </article>
+  </section>
+
+  <!-- Extracurriculars: same rows as Experience. -->
+  <section class="entries" id="extracurriculars">
+    <h2>Extracurriculars</h2>
+    <ul>
+      <li>
+        <h3>IST Diplomat</h3>
+        <p class="meta">College of IST<br>2026</p>
+        <p>Student ambassadors for the College of IST. Diplomats represent the college at events and, through the Undergraduate Recruitment Partnership, meet with prospective students, parents and donors.</p>
+      </li>
+      <li>
+        <h3>Event Chair</h3>
+        <p class="meta">Penn State Asian Pacific Islander Desi American (APIDA) Caucus<br>2026</p>
+        <p>Planning cultural and professional development events for a campus-wide organization.</p>
+      </li>
+      <li>
+        <h3>Member of Oriana Singers</h3>
+        <p class="meta">Penn State School of Music<br>2024 to 2025</p>
+        <p>The School of Music’s upper-voice choir, with singers from majors across the university.</p>
+      </li>
+      <li>
+        <h3>Music Teacher Assistant</h3>
+        <p class="meta">Dalcroze Society of Taiwan<br>2023 to 2024</p>
+        <p>Weekly classes in piano and music theory, with improvisation activities, for 10+ students aged 9 to 15. Also took part in 10+ of the society’s seasonal workshops.</p>
+      </li>
+      <li>
+        <h3>Exhibition Coordinator</h3>
+        <p class="meta">VIS@betterworld lab, Semester Public School Fair<br>2023</p>
+        <p>Ran the public exhibition of student work, with 200 students and their schedule to manage.</p>
+      </li>
+      <li>
+        <h3>Choir Member</h3>
+        <p class="meta">Taipei Philharmonic Youth Choir (<span lang="zh-Hant">台北愛樂青少合唱團</span>)<br>2021 to 2023</p>
+        <p>Two years of rehearsals and concerts, including at the recital hall of the National Theater and Concert Hall in Taipei.</p>
+      </li>
+    </ul>
   </section>
 
   <section class="touch">

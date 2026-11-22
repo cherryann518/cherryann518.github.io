@@ -3,7 +3,7 @@
 Plain HTML and CSS with one small script. There is no build step: open `index.html` in a browser and it works. The glide between pages only shows when the site is served (GitHub Pages, or `python3 -m http.server` in this folder), not when the files are opened directly.
 
 ```
-index.html                     the main page: headline, Now, projects, experience, activities, feed, contact
+index.html                     the main page: headline, Now, projects, experience, highlights, extracurriculars, contact
 work/
   knowledge-curation.html      one page per project
   gaia-agent.html
@@ -15,9 +15,10 @@ styles.css                     everything visual, in nine numbered sections
 resume.css                     only used by work/resume.html: the PDF's sizes and gaps, in points
 site.js                        frame dots, opening screen, menu, sidebar clock, hover dots
 images/portrait.webp
+images/cursor*.png              the pixel mouse pointers (set near the top of section 2 in styles.css)
 images/poster.webp
-images/feed/                   pictures for feed posts
-images/favicon.png             the icon in the browser tab
+images/feed/                   pictures for highlights
+favicon.ico and images/favicon*, apple-touch-icon.png   the cherry icon, in the forms browsers ask for
 fonts/                         m3x6 (pixel titles) and Latin Modern (resume page). Satoshi loads from Fontshare
 tools/check.py                 run after editing: python3 tools/check.py
 Cherryann_Yang_Resume.pdf
@@ -48,33 +49,37 @@ The `style="view-transition-name: ..."` on a block's title and on its page's `<h
 
 ## Add a job or an activity
 
-Both are in `index.html`, under Experience and Activities, and use the same row:
+Both are in `index.html`, under Experience and Extracurriculars, and use the same row. The tools line and the description are optional:
 
 ```html
 <li>
   <h3>Title</h3>
   <p class="meta">Place<br>Dates</p>
-  <p>One line about it. Leave this out if there is nothing to add.</p>
+  <ul class="chips tags"><li>Python</li><li>SQLite</li></ul>
+  <p>One line about it.</p>
 </li>
 ```
 
-## Add a feed post
+## Add a highlight
 
-In `index.html`, under Feed, copy an `<article class="post">` and put it first. A post is a title and a date until someone hovers or taps it.
+Highlights are moments, written the way you would post them: "I presented...", "We won...". Roles and memberships go under Extracurriculars instead. In `index.html`, under Highlights, copy an `<article class="post">` and put it first.
 
 ```html
 <article class="post" tabindex="0">
-  <h3>Title</h3>
+  <h3>I did the thing!</h3>
   <p class="meta">Month Year</p>
+  <img class="thumb" src="images/feed/your-picture.webp" width="960" height="720" alt="" loading="lazy">
   <div class="extra"><div>
-    <img class="photo" src="images/feed/your-picture.webp" width="960" height="720" alt="What the picture shows" loading="lazy">
+    <div class="photos">
+      <img class="photo" src="images/feed/your-picture.webp" width="960" height="720" alt="What the picture shows" loading="lazy">
+    </div>
     <p>A few lines.</p>
     <p><a href="https://...">Post on LinkedIn</a></p>
   </div></div>
 </article>
 ```
 
-Pictures go in `images/feed/`, about 960px wide. A post works without one. For two or more side by side, wrap them in `<div class="photos">`.
+Pictures go in `images/feed/`, about 960px wide. The `thumb` line is the small picture on the closed row. A post works without any pictures: leave out the `thumb` line and the `photos` block.
 
 ## Add a picture to a project page
 
