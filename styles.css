@@ -403,6 +403,23 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
   .entries > ul > li > :not(.meta) { grid-column: 1; }
 }
 
+/* Extracurriculars as a log: the year in a left column, a dotted line of square dots, smaller type */
+.log > ol { --dot: 4px; display: grid; gap: 1.1rem; }
+.log > ol > li { display: grid; grid-template-columns: 1fr; gap: 0.05rem; margin: 0; }
+.log li h3 { font-size: var(--body); line-height: 1.5; }
+.log .when, .log .meta { color: var(--gray-text); font-size: var(--small); }
+.log li > p:last-child { margin-top: 0.15rem; font-size: var(--small); color: var(--gray-deep); max-width: 34rem; }
+@container (min-width: 30rem) {
+  .log > ol > li { grid-template-columns: 5.75rem 1fr; column-gap: 1.75rem; position: relative; }
+  .log .when { grid-column: 1; grid-row: 1 / span 3; text-align: right; padding-top: 0.15rem; }
+  .log > ol > li > :not(.when) { grid-column: 2; }
+  .log .meta { max-width: none; text-align: left; padding: 0; grid-row: auto; }
+  .log > ol > li::before { content: ""; position: absolute; left: calc(5.75rem + 0.875rem - 2px); top: 0; bottom: -1.1rem; width: var(--dot);
+    background: repeating-linear-gradient(to bottom, var(--gray-dark) 0 var(--dot), transparent 0 calc(var(--dot) * 2)); }
+  .log > ol > li:last-child::before { bottom: 0; }
+  .log > ol > li::after { content: ""; position: absolute; left: calc(5.75rem + 0.875rem - 4px); top: 0.45rem; width: 8px; height: 8px; background: var(--ink); box-shadow: 0 0 0 4px var(--paper); }
+}
+
 /* Stack & tools: groups of chips. */
 .stack h3 { margin: 1rem 0 0.4rem; color: var(--gray-deep); font-size: var(--small); }
 
