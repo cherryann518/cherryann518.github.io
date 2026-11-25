@@ -108,7 +108,7 @@ for (const clock of document.querySelectorAll("[data-clock]")) {
 // cursor and a second drifts on its own.
 const DENSITY = 0.44; // how full the clouds are: lower is sparser
 const TINT = [tone("--gray"), tone("--gray-pale")];
-const REACH = 0.5; // how far each cloud spreads: 1 would fill the whole block
+const REACH = 0.65; // how far each cloud spreads: 1 would fill the whole block
 // Room the dots leave around a line of text: screen pixels kept clear at its
 // sides, and pixels trimmed off its top and bottom first.
 const GAP = 2;

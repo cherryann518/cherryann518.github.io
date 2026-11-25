@@ -378,6 +378,7 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
    as its own corner of the page. Its label and title sit where a project's
    do. site.js sends a snake around its edge. */
 .playtile { position: relative; align-self: start; padding: 1.25rem; background: var(--gray-text); color: var(--paper); }
+.block:has(+ .playtile) { align-self: start; }  /* the block beside it keeps its own height */
 .playframe { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
 .playtile .label { color: var(--gray-pale); }
 .playtile h2 { margin-top: -0.2rem; color: var(--paper); }
@@ -397,7 +398,7 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
   mask: var(--arrow-go) center / contain no-repeat;
 }
 .playtile li p { margin-top: 0.3rem; color: var(--gray-pale); font-size: var(--small); line-height: 1.45; }
-.playtile li:hover img, .playtile li:focus-within img { border-color: var(--gray); }
+.playtile li:hover img, .playtile li:focus-within img { transform: scale(1.04); }
 
 /* Experience rows: the title on the left, the place and dates on the right. */
 .entries, main .feed, .touch { max-width: 44rem; margin-top: 3rem; }
@@ -570,6 +571,7 @@ html.opening::before { content: ""; }
   .extra { transition: grid-template-rows 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .thumb { transition: opacity 0.2s; }
   .playtile h3 a::after { transition: transform 0.2s; }
+  .playtile li img { transition: transform 0.2s; }
   .playtile li:hover h3 a::after { transform: translateX(4px); }
   .btn, .chips li, .side nav a, .contact a, :where(main, .rail) a { transition: background-color 0.15s, color 0.15s; }
 
