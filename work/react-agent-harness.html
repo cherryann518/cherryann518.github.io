@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReAct Agent Harness | Cherryann Yang</title>
+<meta name="description" content="A ReAct agent harness built from scratch in Python for CMU 11-768, AI Agents.">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../images/favicon.svg?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#highlights">Highlights</a></li>
+      <li><a href="../index.html#extracurriculars">Extracurriculars</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Project</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: react">ReAct Agent Harness</span></h1>
+    <p class="lede">A ReAct agent harness I built from scratch in Python for CMU 11-768, AI Agents. One loop runs two agents: a coding agent that fixes software issues in a sandbox, and a chess agent that searches with code before it moves.</p>
+
+    <figure>
+      <ol class="steps">
+        <li><strong>Loop</strong> Build the prompt, get an action, run its tool calls, add what came back, repeat.</li>
+        <li><strong>Fix</strong> As a coding agent it works in a terminal in a Modal sandbox and hands in its fix as a patch.</li>
+        <li><strong>Compact</strong> On a longer issue the model rewrites old turns as working memory, so the context stays small.</li>
+        <li><strong>Play</strong> As a chess agent it tries moves in code first, then plays one on the real board.</li>
+      </ol>
+    </figure>
+
+    <section>
+      <h2>The loop</h2>
+      <p>Both agents share one ReAct loop that knows nothing about code or chess. Each step it builds the messages for the model: the standing instructions, the task, and every earlier action with what it returned. Then it asks for the next action, runs each tool call, and links every result back to the call that asked for it.</p>
+      <p>A model can send broken JSON or ask for a tool that does not exist. Those come back to it as results it can read and recover from, so a bad call does not end the run. A step limit does.</p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <p>A skill is a folder with a <code>SKILL.md</code> in it. The harness reads each skill’s name and description into a short catalog in the prompt, and the full instructions only load when the model asks for that skill. The coding agent has one that teaches it how to hand in its work as a patch.</p>
+    </section>
+
+    <section>
+      <h2>Context compaction</h2>
+      <p>Long runs fill the context window and cost more with every step. When the context passes a token threshold, the model is asked to rewrite the older part of the transcript as short working memory: the goal, the constraints, the files and commands, what was edited, what failed, and what comes next.</p>
+      <p>The original instructions and the task stay word for word, and so does the latest complete action with its results. The coding agent used this to patch a SWE-bench issue in Django (<code>django__django-15368</code>, where <code>bulk_update()</code> did not work with plain <code>F()</code> expressions).</p>
+    </section>
+
+    <section>
+      <h2>The chess agent</h2>
+      <p>The chess agent runs on the same loop with three tools:</p>
+      <ul>
+        <li><code>play_move</code> plays one move on the live board, and the opponent answers</li>
+        <li><code>simulate_move</code> tries a move from any position without touching the live game</li>
+        <li><code>run_python</code> runs code the model wrote, with the other two available as ordinary functions</li>
+      </ul>
+      <p>That last one is programmatic tool calling. The model writes a small search that simulates its candidate moves and the replies to them, then plays the one it picked. The code it writes runs in the sandbox, never in the agent’s own process.</p>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="satsuma.html">Satsuma</a></li>
+      <li><a href="glitchdle.html">Glitchdle</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>Course</dt><dd>CMU 11-768 AI Agents</dd></div>
+      <div><dt>When</dt><dd>Sep 2026 to Nov 2026</dd></div>
+      <div><dt>Built with</dt><dd>Python, Modal</dd></div>
+      <div><dt>Tasks</dt><dd>A SWE-bench Django issue, and chess against a rule-based bot</dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>

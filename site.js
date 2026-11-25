@@ -6,7 +6,8 @@ const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 // Colours come from styles.css, so they are only ever set in one place.
 const tone = (name) => {
-  const hex = getComputedStyle(root).getPropertyValue(name).trim().slice(1);
+  let hex = getComputedStyle(root).getPropertyValue(name).trim().slice(1);
+  if (hex.length === 3) hex = [...hex].map((c) => c + c).join(""); // #000 is short for #000000
   return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
 };
 
@@ -107,6 +108,11 @@ for (const clock of document.querySelectorAll("[data-clock]")) {
 // cursor and a second drifts on its own.
 const DENSITY = 0.44; // how full the clouds are: lower is sparser
 const TINT = [tone("--gray"), tone("--gray-pale")];
+const REACH = 0.5; // how far each cloud spreads: 1 would fill the whole block
+// Room the dots leave around a line of text: screen pixels kept clear at its
+// sides, and pixels trimmed off its top and bottom first.
+const GAP = 2;
+const TRIM = 3;
 
 for (const block of document.querySelectorAll(".block")) {
   const canvas = document.createElement("canvas");
@@ -117,6 +123,7 @@ for (const block of document.querySelectorAll(".block")) {
   let frame = 0;
   let mx = 0.3;
   let my = 0.4;
+  let clear = new Uint8Array(0); // one cell per dot: 1 where a line of text sits, so no dot lands behind it
 
   const draw = (now) => {
     const { width: w, height: h } = canvas;
@@ -127,10 +134,11 @@ for (const block of document.querySelectorAll(".block")) {
     const wide = w / h;
     for (let y = 0; y < h; y++) {
       for (let x = 0; x < w; x++) {
+        if (clear[y * w + x]) continue;
         const u = x / w;
         const v = y / h;
-        const near = Math.max(0, 1 - Math.hypot((u - mx) * wide, v - my) / 1.1);
-        const far = Math.max(0, 1 - Math.hypot((u - cx) * wide, v - cy) / 1.4);
+        const near = Math.max(0, 1 - Math.hypot((u - mx) * wide, v - my) / (1.1 * REACH));
+        const far = Math.max(0, 1 - Math.hypot((u - cx) * wide, v - cy) / (1.4 * REACH));
         const colour = near * DENSITY > limit(x, y) ? TINT[0] : far * DENSITY * 0.85 > limit(x, y) ? TINT[1] : null;
         if (colour) image.data.set([colour[0], colour[1], colour[2], 255], (y * w + x) * 4);
       }
@@ -140,8 +148,21 @@ for (const block of document.querySelectorAll(".block")) {
   };
   const start = () => {
     const box = block.getBoundingClientRect();
-    canvas.width = Math.ceil(box.width / DOT);
-    canvas.height = Math.ceil(box.height / DOT);
+    const w = (canvas.width = Math.ceil(box.width / DOT));
+    const h = (canvas.height = Math.ceil(box.height / DOT));
+    const cell = box.width / w;
+    const range = document.createRange();
+    clear = new Uint8Array(w * h);
+    for (const text of block.querySelectorAll("p")) {
+      range.selectNodeContents(text);
+      for (const line of range.getClientRects()) {
+        const left = Math.max(0, Math.floor((line.left - box.left - GAP) / cell));
+        const right = Math.min(w, Math.ceil((line.right - box.left + GAP) / cell));
+        const top = Math.max(0, Math.floor((line.top - box.top + TRIM) / cell));
+        const bottom = Math.min(h, Math.ceil((line.bottom - box.top - TRIM) / cell));
+        for (let y = top; y < bottom; y++) clear.fill(1, y * w + left, y * w + right);
+      }
+    }
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(draw);
   };
@@ -156,4 +177,77 @@ for (const block of document.querySelectorAll(".block")) {
   });
   block.addEventListener("pointerleave", stop);
   block.addEventListener("focusout", stop);
+}
+
+
+// Playground: a snake that crawls around the edge of the tile. It eats the dot
+// ahead of it, grows, and starts over when it gets long. It idles slowly and
+// speeds up under the cursor.
+{
+  const tile = document.querySelector(".playtile");
+  if (tile) {
+    const TRACK = tone("--gray-deep");
+    const BODY = tone("--paper");
+    const TAIL = tone("--gray-dark");
+    const canvas = document.createElement("canvas");
+    canvas.className = "playframe";
+    canvas.setAttribute("aria-hidden", "true");
+    tile.append(canvas);
+    const ctx = canvas.getContext("2d");
+    let w = 0;
+    let h = 0;
+    let edge = []; // the cells around the outside, as [x, y], going clockwise
+    let hot = false;
+    let seen = false;
+    let clock = 0; // runs faster while the cursor is over the tile
+    let last = 0;
+    let food = 0.37; // where the next dot is, as a share of the way round
+    let length = 8;
+
+    const size = () => {
+      const box = tile.getBoundingClientRect();
+      w = canvas.width = Math.round(box.width / DOT);
+      h = canvas.height = Math.round(box.height / DOT);
+      edge = [];
+      for (let x = 1; x < w - 1; x++) edge.push([x, 0]); // the four corners are left out,
+      for (let y = 1; y < h - 1; y++) edge.push([w - 1, y]); // like the nicked corners
+      for (let x = w - 2; x > 0; x--) edge.push([x, h - 1]); // every box here has
+      for (let y = h - 2; y > 0; y--) edge.push([0, y]);
+    };
+    const dot = ([x, y], colour) => {
+      ctx.fillStyle = `rgb(${colour})`;
+      ctx.fillRect(x, y, 1, 1);
+    };
+    const draw = (now) => {
+      clock += (Math.min(now - last, 100) / 1000) * (hot ? 3 : 1);
+      last = now;
+      const n = edge.length;
+      const head = Math.floor(clock * 9) % n;
+      const meal = Math.floor(food * n);
+      ctx.clearRect(0, 0, w, h);
+      for (const cell of edge) dot(cell, TRACK);
+      if (head === meal) {
+        length = length > n * 0.3 ? 8 : length + 3;
+        food = (food + 0.23 + Math.random() * 0.4) % 1;
+      } else if (hot || Math.floor(clock * 3) % 2) dot(edge[meal], BODY); // the dot blinks until the cursor arrives
+      for (let k = 0; k < length; k++) dot(edge[(head - k + n) % n], k < length - 2 ? BODY : TAIL);
+      if (!still && seen) requestAnimationFrame(draw);
+    };
+    const run = () => {
+      last = performance.now();
+      requestAnimationFrame(draw);
+    };
+
+    new ResizeObserver(() => {
+      size();
+      if (still) run(); // nothing is moving, so draw it once at the new size
+    }).observe(tile);
+    new IntersectionObserver(([entry]) => {
+      const was = seen;
+      seen = entry.isIntersecting; // it only runs while it is on screen
+      if (seen && !was && !still) run();
+    }).observe(tile);
+    tile.addEventListener("pointerenter", () => (hot = true));
+    tile.addEventListener("pointerleave", () => (hot = false));
+  }
 }

@@ -1,23 +1,25 @@
 # cherryann-site
 
-Plain HTML and CSS with one small script. There is no build step: open `index.html` in a browser and it works. The glide between pages only shows when the site is served (GitHub Pages, or `python3 -m http.server` in this folder), not when the files are opened directly.
-
 ```
-index.html                     the main page: headline, Now, projects, experience, highlights, extracurriculars, contact
+index.html                     the main page: headline, get in touch, projects, playground, experience, highlights, extracurriculars
 work/
   knowledge-curation.html      one page per project
+  react-agent-harness.html
   gaia-agent.html
   beijing-pm25.html
   antibody-prediction.html
+  satsuma.html                 playground pages use the same layout
+  glitchdle.html
   resume.html                  the resume, set like the PDF
   knowledge-curation-poster.pdf
 styles.css                     everything visual, in nine numbered sections
 resume.css                     only used by work/resume.html: the PDF's sizes and gaps, in points
-site.js                        frame dots, opening screen, menu, sidebar clock, hover dots
+site.js                        frame and playground dots, opening screen, menu, sidebar clock, hover dots
 images/portrait.webp
 images/cursor*.png              the pixel mouse pointers (set near the top of section 2 in styles.css)
 images/poster.webp
 images/feed/                   pictures for highlights
+images/play/                   pictures and the demo video for the playground
 favicon.ico and images/favicon*, apple-touch-icon.png   the cherry icon, in the forms browsers ask for
 fonts/                         m3x6 (pixel titles) and Latin Modern (resume page). Satoshi loads from Fontshare
 tools/check.py                 run after editing: python3 tools/check.py
@@ -32,12 +34,8 @@ Every page has the same three parts: the sidebar (`<header class="side">`), the 
 2. Two voices. The pixel font is the loud one, kept for the headline and project titles. Put `class="pixel"` on an `<h1>` or `<h2>` to set it in pixels. Satoshi is the quiet one for everything else, and it is never bold.
 3. Topic headings (Experience, Feed, Facts) are small and gray. They label a part of the page.
 4. Colour is black, white and Classic Gray, lighter or darker. Nothing else, apart from pictures and the resume sheet.
-5. The small drawn things (photo frame, arrows, the Now dot) are built from square dots, like the font. Every box has one square missing from each corner. To give a new box the same corners, add its selector to the "Pixel corners" list in section 2 of `styles.css`.
+5. The small drawn things (photo frame, arrows) are built from square dots, like the font. Every box has one square missing from each corner. To give a new box the same corners, add its selector to the "Pixel corners" list in section 2 of `styles.css`.
 6. Nothing tints until you hover.
-
-## Change the Now line
-
-In `index.html`, edit the sentence inside `<div class="callout">`.
 
 ## Add a project
 
@@ -46,6 +44,20 @@ In `index.html`, edit the sentence inside `<div class="callout">`.
 3. Add it to the "More work" list at the bottom of the other project pages.
 
 The `style="view-transition-name: ..."` on a block's title and on its page's `<h1>` must be the same word. That is what makes the title glide from one to the other.
+
+## Add something to the Playground
+
+The Playground is the stone gray tile at the end of the project grid in `index.html`. Copy one `<li>` and change the picture, the link, the name and the line under it:
+
+```html
+<li>
+  <img src="images/play/your-picture.webp" width="960" height="720" alt="What the picture shows" loading="lazy">
+  <h3 class="pixel"><a href="work/your-page.html">Name</a></h3>
+  <p>One line about it.</p>
+</li>
+```
+
+Pictures go in `images/play/` and are cropped to 4 by 3. Its page is made the same way as a project page, with the label Playground.
 
 ## Add a job or an activity
 
@@ -107,15 +119,6 @@ Put the file in `images/`, then anywhere between sections:
 
 The menu jumps to parts of the main page. Each link ends in `#` and the `id` of a section in `index.html` (`#experience` goes to `<section id="experience">`). The sidebar is repeated at the top of every `.html` file, so change it in one file and use find-and-replace across the folder for the rest. Pages inside `work/` use `../` in front of their links.
 
-## Update the resume
-
-Replace `Cherryann_Yang_Resume.pdf`, then change the same lines in `work/resume.html`. `python3 tools/check.py` compares the two word for word if `pdftotext` is installed.
-
-The page is set from the PDF's own measurements, so on a tablet or anything wider it has the same fonts, sizes and line breaks as the PDF, and on a phone it wraps to fit. You only need to touch `resume.css` if the LaTeX template changes. Two things to keep when editing `work/resume.html`:
-
-- every `<p class="row">` holds exactly two `<span>`s, the left half and the right half
-- the Projects, Technical Skills and Extracurricular sections carry a class (`projects`, `skills`, `extra`) because the PDF spaces them a little differently
-
 ## Change the look
 
 Everything adjustable is a token at the top of `styles.css`:
@@ -131,15 +134,6 @@ The pixel font is only sharp at 32, 48 and 64px. Other sizes blur it.
 A button gets the pixel arrow with `class="btn go"`. Links to other sites get one on their own.
 
 All animation lives in section 9 of `styles.css`. Delete that section to turn it off. How full the hover dots are is `DENSITY` in `site.js`.
-
-## Publish on GitHub Pages
-
-1. On github.com, make a new public repository named `cherryann518.github.io`.
-2. On the new repository's page, choose "uploading an existing file", drag in everything inside this folder (the files and folders, not the folder itself), and commit.
-3. Go to Settings, then Pages. Under "Build and deployment", set Source to "Deploy from a branch", pick `main` and `/ (root)`, and save.
-4. After a minute or two the site is at `https://cherryann518.github.io/`.
-
-To update it later, upload the changed files the same way. They replace the old ones.
 
 ## Fonts and credits
 

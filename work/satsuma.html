@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satsuma | Cherryann Yang</title>
+<meta name="description" content="Satsuma is a photo album you search by color. It runs entirely in the browser.">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../images/favicon.svg?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#highlights">Highlights</a></li>
+      <li><a href="../index.html#extracurriculars">Extracurriculars</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Playground</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: satsuma">Satsuma</span></h1>
+    <p class="lede">A photo album you search by color. Pick a color and see which of your photos have it. It runs entirely in the browser, so photos are read on your device and stay there.</p>
+    <a class="btn go" href="https://cherryann518.github.io/satsuma/">Try it</a>
+
+    <figure>
+      <img src="../images/play/satsuma-match.webp" width="1600" height="1000" alt="A photo of a coffee cup open in Satsuma with orange picked. The orange parts of the photo stay in color and everything else is drawn in black and white dots. Under it: 31% orange, closeness 63, first of 3 matches, and a stripe of the photo’s main colors.">
+    </figure>
+
+    <section>
+      <h2>What it does</h2>
+      <ul>
+        <li>Search by color. Tap a color, or two, and photos re-rank by how much of that color they have and how close it is.</li>
+        <li>See why. Open a photo and the matching pixels stay in color while the rest drops to a 1-bit dither. Tolerance sliders update it live.</li>
+        <li>Pick from a photo. Tap anywhere on a photo to search for that exact color.</li>
+        <li>Build sets. Select photos, save matches as an album, export a zip or a single image.</li>
+      </ul>
+    </section>
+
+    <figure>
+      <ol class="steps">
+        <li><strong>Import</strong> Each photo is scaled down to 128px for analysis.</li>
+        <li><strong>Histogram</strong> Pixels go to OKLab and into buckets by lightness, chroma and hue.</li>
+        <li><strong>Match</strong> A bucket matches when it sits inside the tolerances around your color.</li>
+        <li><strong>Score</strong> Photos rank by how much of the color they have and how close it is.</li>
+      </ol>
+    </figure>
+
+    <section>
+      <h2>How matching works</h2>
+      <p>Each bucket keeps its pixel count and mean color. That happens once per photo, so a search is a lookup.</p>
+      <p>Hue, lightness and chroma each have their own tolerance, and each built-in color has its own defaults, because color names cover different ranges. Blue runs from navy to pale sky, while dark orange stops being orange and becomes brown. Near-grey pixels have no usable hue and never match a chromatic color.</p>
+      <p>Coverage is the share of the photo that matches. The score is <code>sqrt(min(1, coverage / 30%)) x closeness</code>, so past 30% only closeness separates photos. With two colors a photo needs both, and its coverage is the smaller of the two.</p>
+    </section>
+
+    <section>
+      <h2>Warm lighting</h2>
+      <p>The brightest near-white pixels estimate a warm color cast, which is cancelled before matching, so a white plate under yellow light still counts as white. Cool casts are left alone so a pale sky is never treated as white.</p>
+    </section>
+
+    <section>
+      <h2>Limits</h2>
+      <ul>
+        <li>Storage is IndexedDB in one browser on one device. No sync, no backup, and a browser can clear it.</li>
+        <li>A web page only sees the photos you pick. It cannot read a whole camera roll.</li>
+        <li>Originals are not kept, so exports are 900px copies.</li>
+        <li>HEIC photos only work where the browser can decode them.</li>
+      </ul>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="react-agent-harness.html">ReAct Agent Harness</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="glitchdle.html">Glitchdle</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>What</dt><dd>A photo tool that runs in the browser</dd></div>
+      <div><dt>My part</dt><dd>Idea, design and direction. Built with Claude.</dd></div>
+      <div><dt>Built with</dt><dd>HTML, CSS, JavaScript, IndexedDB. No build step and no dependencies.</dd></div>
+      <div><dt>Try it</dt><dd><a href="https://cherryann518.github.io/satsuma/">cherryann518.github.io/satsuma</a></dd></div>
+      <div><dt>Code</dt><dd><a href="https://github.com/cherryann518/satsuma">View on GitHub</a></dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>

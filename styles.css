@@ -13,7 +13,7 @@
      - Topic headings (Experience, Feed, Facts) are small and gray. They label
        a part of the page; they are not the content.
      - Colour is black, white and Classic Gray, lighter or darker. Nothing else.
-     - The small drawn things (photo frame, arrows, the Now dot) are built
+     - The small drawn things (photo frame, arrows) are built
        from square dots, like the font. Every box has one square dot missing
        from each corner, so nothing is perfectly sharp.
      - Nothing tints until you hover.
@@ -23,7 +23,7 @@
      2. Base
      3. Layout        frame, block, sidebar | page | floating block
      4. Sidebar
-     5. Pieces        links, buttons, chips, the Now callout
+     5. Pieces        links, buttons, chips
      6. Work page     headline, project blocks, experience rows
      7. Inner pages   write-ups, facts, steps, feed
      8. Opening       the screen that shows when you first arrive
@@ -44,7 +44,7 @@
      the site is one of these. site.js reads the hover and frame ones. */
   --gray: #e3e1d8;          /* Classic Gray itself: hover dots, hover fills */
   --gray-pale: #eeede7;     /* the second, fainter hover dot */
-  --gray-light: #f3f2ee;    /* sidebar, Now callout, step boxes */
+  --gray-light: #f3f2ee;    /* sidebar, get in touch, step boxes */
   --gray-dark: #cfcdc3;     /* the floating block */
   --gray-text: #6b695f;     /* quiet text on white or light gray */
   --gray-deep: #4d4b44;     /* quiet text on the floating block */
@@ -77,7 +77,7 @@
   --pad: clamp(1.25rem, 3vw, 2.5rem);
   --step: 1.5rem;                                           /* the usual gap between things */
 
-  /* Pixel arrows, drawn on a grid of dots. Used as masks so they take the text colour. */
+  /* Pixel arrows and signs, drawn on a grid of dots. Used as masks so they take the text colour. */
   --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h4v4H4V1H1zM3 1h1v1H3zM2 2h1v1H2zM1 3h1v1H1zM0 4h1v1H0z'/%3E%3C/svg%3E");
   --arrow-go: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 5' shape-rendering='crispEdges'%3E%3Cpath d='M0 2h7v1H0zM4 0h1v1H4zM5 1h1v1H5zM5 3h1v1H5zM4 4h1v1H4z'/%3E%3C/svg%3E");
 }
@@ -92,7 +92,7 @@ html { background: var(--night); scroll-padding-top: calc(var(--frame) + var(--p
 /* Pixel mouse pointers: an arrow, and a hand over anything you can press.
    The second line of each pair is a sharper copy for high-resolution screens. */
 html { cursor: url(images/cursor.png) 0 0, auto; cursor: image-set(url(images/cursor.png) 1x, url(images/cursor@2x.png) 2x) 0 0, auto; }
-a, button { cursor: url(images/cursor-hand.png) 5 0, pointer; cursor: image-set(url(images/cursor-hand.png) 1x, url(images/cursor-hand@2x.png) 2x) 5 0, pointer; }
+a, button, summary { cursor: url(images/cursor-hand.png) 5 0, pointer; cursor: image-set(url(images/cursor-hand.png) 1x, url(images/cursor-hand@2x.png) 2x) 5 0, pointer; }
 
 body {
   display: grid;
@@ -114,13 +114,13 @@ strong, b { font-weight: 500; }
 
 /* Pixel corners: every box loses one square dot from each corner. To give a
    new box the same corners, add its selector to this list. */
-.btn, .chips li, .side nav a, .callout, .rail, .feed, .touch, .post, .steps li, .frame, .glow, .paper {
+.btn, .chips li, .side nav a, .rail, .feed, .touch, .post, .steps li, .frame, .glow, .paper, .playtile {
   clip-path: polygon(
     var(--nick) 0, calc(100% - var(--nick)) 0, calc(100% - var(--nick)) var(--nick), 100% var(--nick),
     100% calc(100% - var(--nick)), calc(100% - var(--nick)) calc(100% - var(--nick)), calc(100% - var(--nick)) 100%, var(--nick) 100%,
     var(--nick) calc(100% - var(--nick)), 0 calc(100% - var(--nick)), 0 var(--nick), var(--nick) var(--nick));
 }
-.callout, .rail, .feed, .touch, .frame, .paper { --nick: 4px; }
+.rail, .feed, .touch, .frame, .paper, .playtile { --nick: 4px; }
 .glow { --nick: 6px; }  /* one of its own dots */
 .btn:focus-visible, .side nav a:focus-visible { outline-color: currentColor; outline-offset: -5px; }  /* inside, where the corners cannot clip it */
 code { font: 0.92em var(--mono); }
@@ -332,27 +332,16 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 .tags { margin-top: 0.45rem; }
 .tags li { --nick: 2px; padding: 0 0.4rem; background: var(--gray-light); font-size: 0.75rem; }
 
-/* A callout: a gray box with a flashing pixel dot beside its title. The dot
-   is drawn on a 7 by 7 grid, each square one --stroke wide. */
-.callout { display: grid; gap: 0.25rem 1.25rem; max-width: 38rem; padding: 0.9rem 1rem; background: var(--gray-light); }
-.callout .tag { display: flex; align-items: center; gap: 0.5rem; }
-.dot { flex: none; width: calc(var(--stroke) * 7); height: calc(var(--stroke) * 7); fill: var(--ink); shape-rendering: crispEdges; }
-
-@container (min-width: 30rem) {
-  .callout { grid-template-columns: auto minmax(0, 1fr); }
-}
-
 
 /* 6. Work page ------------------------------------------------------------ */
 
 .intro h1 { max-width: 15em; }
 .lede { max-width: 38rem; margin-top: 1rem; }
-.intro .callout { margin-top: var(--step); }
-.intro .btn { margin-top: var(--step); }
+.intro .touch { max-width: 38rem; margin-top: var(--step); }
 
 /* Project blocks: two across when there is room, no lines between them.
    Hovering one brings up a cloud of pale dots behind it (site.js draws them)
-   and a white edge around its words so they stay easy to read. The whole
+   and a white strip behind each line of words so they stay easy to read. The whole
    block is the link. The blocks hang a little outside the column so their
    text lines up with the headline. */
 .blocks { display: grid; gap: 0.5rem; margin: 2rem -1.25rem 0; }
@@ -360,9 +349,6 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 .glow { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; image-rendering: pixelated; opacity: 0; }
 .block:hover .glow, .block:focus-within .glow { opacity: 1; }
 .block:hover :is(.label, .meta), .block:focus-within :is(.label, .meta) { color: var(--ink); }
-.block:hover :is(.label, p), .block:focus-within :is(.label, p) {
-  text-shadow: 0 0 2px var(--paper), 0 0 2px var(--paper), 0 0 3px var(--paper), 0 0 3px var(--paper), 0 0 4px var(--paper), 0 0 5px var(--paper);
-}
 .block:hover h2, .block:focus-within h2 {  /* a hard edge, one dot wide, for the pixel title */
   text-shadow: 3px 0 var(--paper), -3px 0 var(--paper), 0 3px var(--paper), 0 -3px var(--paper), 3px 3px var(--paper), -3px 3px var(--paper), 3px -3px var(--paper), -3px -3px var(--paper);
 }
@@ -387,6 +373,31 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 @container (min-width: 34rem) {
   .blocks { grid-template-columns: 1fr 1fr; }
 }
+
+/* Playground: the last tile in the grid, and the only filled one, so it reads
+   as its own corner of the page. Its label and title sit where a project's
+   do. site.js sends a snake around its edge. */
+.playtile { position: relative; align-self: start; padding: 1.25rem; background: var(--gray-text); color: var(--paper); }
+.playframe { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+.playtile .label { color: var(--gray-pale); }
+.playtile h2 { margin-top: -0.2rem; color: var(--paper); }
+.playtile ul { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.8rem; }
+.playtile li { position: relative; }
+.playtile li img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 0.25rem solid var(--paper); }
+.playtile h3 { margin-top: 0.75rem; color: var(--paper); font-size: 2rem; }
+.playtile h3 a, .playtile h3 a:hover { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; background: none; text-decoration: none; }
+.playtile h3 a::before { content: ""; position: absolute; inset: 0; }  /* stretches the link over the picture and the words */
+.playtile h3 a::after {  /* the same pixel arrow the projects have */
+  content: "";
+  flex: none;
+  width: calc(var(--stroke) * 7);
+  height: calc(var(--stroke) * 5);
+  background: currentColor;
+  -webkit-mask: var(--arrow-go) center / contain no-repeat;
+  mask: var(--arrow-go) center / contain no-repeat;
+}
+.playtile li p { margin-top: 0.3rem; color: var(--gray-pale); font-size: var(--small); line-height: 1.45; }
+.playtile li:hover img, .playtile li:focus-within img { border-color: var(--gray); }
 
 /* Experience rows: the title on the left, the place and dates on the right. */
 .entries, main .feed, .touch { max-width: 44rem; margin-top: 3rem; }
@@ -427,6 +438,7 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 /* 7. Inner pages ---------------------------------------------------------- */
 
 .sheet .label + h1 { margin-top: -0.1rem; }  /* the pixel letters carry their own space above */
+.sheet .lede + .btn { margin-top: var(--step); }
 .sheet section { max-width: 38rem; margin-top: 2.5rem; }
 .sheet section > h2 { margin-bottom: 0.6rem; color: var(--ink); font-size: var(--lead); }  /* a heading inside a write-up */
 .sheet section p + p { margin-top: 0.9rem; }
@@ -442,7 +454,8 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 .facts dl div + div { margin-top: 0.9rem; }
 .facts dd { margin-top: 0.1rem; overflow-wrap: anywhere; }
 .touch { padding: 1.25rem; background: var(--gray-light); }
-.touch p { margin: 0.4rem 0 1rem; }
+.touch p { margin: 0.4rem 0 0.7rem; }
+.touch .btns { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.5rem; margin: 0; }
 
 .more { max-width: 38rem; margin-top: 3rem; }
 .more ul { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin-top: 0.6rem; }
@@ -453,7 +466,7 @@ main { min-width: 0; padding: var(--pad); container-type: inline-size; }
 }
 
 figure { margin-top: 2rem; }
-figure img { width: 100%; }
+figure img, figure video { display: block; width: 100%; height: auto; }
 figcaption { margin-top: 0.6rem; }
 
 /* The step diagrams on project pages: four gray boxes in a row. */
@@ -544,12 +557,11 @@ html.opening::before { content: ""; }
   .block:nth-child(2) { --i: 1; }
   .block:nth-child(3) { --i: 2; }
   .block:nth-child(4) { --i: 3; }
+  .block:nth-child(5) { --i: 4; }
+  .block:nth-child(6) { --i: 5; }
   html.opening .block { animation: none; }
   .caret::after { animation: 1s steps(1) infinite blink; }
   .opening-screen { transition: opacity 0.4s; }
-
-  /* The Now dot flashes black, then white. */
-  .dot { animation: 1.4s steps(1) infinite flash; }
 
   /* Hover: the dots fade in, the arrow nudges, a feed row opens. */
   .glow { transition: opacity 0.35s; }
@@ -557,6 +569,8 @@ html.opening::before { content: ""; }
   .block:hover h2 a::after { transform: translateX(4px); }
   .extra { transition: grid-template-rows 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .thumb { transition: opacity 0.2s; }
+  .playtile h3 a::after { transition: transform 0.2s; }
+  .playtile li:hover h3 a::after { transform: translateX(4px); }
   .btn, .chips li, .side nav a, .contact a, :where(main, .rail) a { transition: background-color 0.15s, color 0.15s; }
 
   /* The research loop on its own page: each step darkens in turn. */
@@ -568,7 +582,6 @@ html.opening::before { content: ""; }
   @keyframes arrive { from { opacity: 0; transform: translateY(12px); } }
   @keyframes leave { to { opacity: 0; } }
   @keyframes blink { 50% { opacity: 0; } }
-  @keyframes flash { 50% { fill: var(--paper); } }
   @keyframes turn {
     0%, 21% { background-color: var(--gray-dark); }
     25%, 100% { background-color: var(--gray-light); }

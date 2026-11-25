@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glitchdle | Cherryann Yang</title>
+<meta name="description" content="Glitchdle is a five-letter word game where one tile in every guess shows the wrong color.">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../images/favicon.svg?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#highlights">Highlights</a></li>
+      <li><a href="../index.html#extracurriculars">Extracurriculars</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Playground</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: glitchdle">Glitchdle</span></h1>
+    <p class="lede">A five-letter word game where the colors lie. After each guess the tiles change color to tell you how close you are, except that in every guess one tile shows the wrong color.</p>
+    <a class="btn go" href="https://cherryann518.github.io/glitchdle/">Play it</a>
+
+    <figure>
+<video controls preload="none" playsinline src="../images/play/glitchdle-demo.mp4" poster="../images/play/glitchdle-demo.webp" width="1280" height="720" aria-label="A walkthrough of Glitchdle: the start screen, then a game in each of the three modes."></video>
+    </figure>
+
+    <section>
+      <h2>Three modes</h2>
+      <p>The modes differ in what happens to the wrong tile afterwards.</p>
+      <ul>
+        <li>Flicker: 6 guesses. The wrong tile is corrected right after your next guess, so only your newest row can’t be trusted.</li>
+        <li>Scanner: 6 guesses. The wrong tile stays, and you get 3 scans per game. Scan an honest tile and it gets a cyan mark. Scan the wrong one and it flips to its real color, which clears the whole row.</li>
+        <li>Corrupt: 8 guesses. The wrong tile stays and there are no scans.</li>
+      </ul>
+      <p>The limits differ for a reason. A careful player solves Flicker and Scanner within 6 guesses about 97% of the time, close to a game with no lies at all. In Corrupt the lies never get cleared up, and the same player only makes it within 6 about 93% of the time, so it gets 8.</p>
+    </section>
+
+    <section>
+      <h2>Daily and practice</h2>
+      <p>Daily is one puzzle per mode per day. Everyone gets the same word and the same wrong tiles. Both are worked out from the date, so no server is involved. When you finish, you can copy your result as an emoji grid, where a purple square is a tile that lied to you.</p>
+      <p>Practice is random words, as many games as you like.</p>
+    </section>
+
+    <section>
+      <h2>How it’s put together</h2>
+      <ul>
+        <li>No build step and no dependencies. It is a plain static site in HTML, CSS and JavaScript modules.</li>
+        <li>Each kind of lie is its own small class, so adding a mode means one class and one entry in a list.</li>
+        <li>Every letter is drawn from a 5x7 bitmap. A tile is 35 individual pixels, which is how it scrambles into static and locks back into a letter.</li>
+        <li>Green is solid, yellow has a dithered edge and gray is a dark block, so the three can be told apart without relying on hue.</li>
+        <li>The game picks from 1,310 hand-picked answers and accepts 6,576 words as guesses.</li>
+      </ul>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="react-agent-harness.html">ReAct Agent Harness</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="satsuma.html">Satsuma</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>What</dt><dd>A word game that runs in the browser</dd></div>
+      <div><dt>My part</dt><dd>I built it on my own a few years ago, without AI. Recently I refined it and redesigned it with Claude.</dd></div>
+      <div><dt>Modes</dt><dd>Flicker, Scanner, Corrupt</dd></div>
+      <div><dt>Built with</dt><dd>HTML, CSS, JavaScript. No build step and no dependencies.</dd></div>
+      <div><dt>Play it</dt><dd><a href="https://cherryann518.github.io/glitchdle/">cherryann518.github.io/glitchdle</a></dd></div>
+      <div><dt>Code</dt><dd><a href="https://github.com/cherryann518/glitchdle">View on GitHub</a></dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>
