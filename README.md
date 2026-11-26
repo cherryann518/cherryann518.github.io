@@ -8,6 +8,7 @@ work/
   gaia-agent.html
   beijing-pm25.html
   antibody-prediction.html
+  stocklens.html
   satsuma.html                 playground pages use the same layout
   glitchdle.html
   resume.html                  the resume, set like the PDF

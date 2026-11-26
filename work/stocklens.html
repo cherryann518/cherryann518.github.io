@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockLens | Cherryann Yang</title>
+<meta name="description" content="A stock recommendation site built by a team of four at SteelHacks 2025. I built the FastAPI backend and most of the React interface.">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../images/favicon.svg?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="side">
+  <span class="frame"><img class="portrait" src="../images/portrait.webp" width="400" height="480" alt="Cherryann Yang"></span>
+  <p class="name"><a href="../index.html">Cherryann Yang</a></p>
+  <p class="role">Applied Data Science<br>Penn State, class of 2028</p>
+  <p class="clock">State College<time data-clock="America/New_York"></time></p>
+  <nav aria-label="Site"><ul>
+      <li><a href="../index.html#top" aria-current="page">Work</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#highlights">Highlights</a></li>
+      <li><a href="../index.html#extracurriculars">Extracurriculars</a></li>
+    </ul></nav>
+  <ul class="contact">
+    <li><a href="mailto:cherryannyang@outlook.com">cherryannyang@outlook.com</a></li>
+    <li><a href="https://www.linkedin.com/in/cherryann-yang">LinkedIn</a></li>
+    <li><a href="https://github.com/cherryann518">GitHub</a></li>
+  </ul>
+</header>
+
+<main>
+  <article class="sheet">
+    <p class="label">Project</p>
+    <h1 class="pixel"><span class="glide" style="view-transition-name: stocklens">StockLens</span></h1>
+    <p class="lede">A stock recommendation site for people who are new to investing, built with three teammates at SteelHacks 2025. I built the API and most of the interface, and a teammate wrote the risk model behind it.</p>
+
+    <figure>
+      <img src="../images/stocklens-dashboard.webp" width="1600" height="1433" alt="The StockLens dashboard: the value of a portfolio, a buy, hold or sell call for each stock in it, and ten stocks ranked by score." loading="lazy">
+      <figcaption>The dashboard, with sample prices.</figcaption>
+    </figure>
+
+    <section>
+      <h2>What it does</h2>
+      <p>You sign in and add the stocks you hold. For each one the app says buy, hold or sell, and shows the numbers behind the call. It also ranks a watchlist of ten stocks.</p>
+      <p>The calls come from a Monte Carlo simulation: 3,000 possible price paths over the next 21 trading days, built from two years of price history. From those it works out the expected return and the average loss in the worst 5% of cases.</p>
+    </section>
+
+    <section>
+      <h2>What I built</h2>
+      <ul>
+        <li>the FastAPI backend: accounts, portfolio endpoints and a SQLite database</li>
+        <li>the link between my teammate’s risk model and the API, so recommendations and rankings run on real market data</li>
+        <li>fallback prices for when Yahoo Finance fails</li>
+        <li>the React app: the sign-in form and the dashboard, with the portfolio, the recommendations, the top 10 ranking, and a dialog for choosing how many shares to add</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Going back to it</h2>
+      <p>A lot of it was rushed, the way hackathon code is. In November 2026 I went back and cleaned up my part with Claude:</p>
+      <ul>
+        <li>passwords are salted and hashed, and signing in returns a token that every request has to carry</li>
+        <li>every request and response is checked against a Pydantic model</li>
+        <li>buying a stock you already hold adds to that holding, where it used to make a second row</li>
+        <li>the frontend moved from Create React App to Vite, and the 600-line dashboard became small components</li>
+        <li>the API has tests that run the real model on made-up prices</li>
+      </ul>
+      <p>The model itself is unchanged.</p>
+    </section>
+  </article>
+
+  <nav class="more" aria-label="More work">
+    <h2>More work</h2>
+    <ul>
+      <li><a href="knowledge-curation.html">Continuous Knowledge Curation</a></li>
+      <li><a href="react-agent-harness.html">ReAct Agent Harness</a></li>
+      <li><a href="gaia-agent.html">GAIA Tool-Using Agent</a></li>
+      <li><a href="beijing-pm25.html">Beijing PM2.5 Forecasting</a></li>
+      <li><a href="antibody-prediction.html">Antibody Level Prediction</a></li>
+      <li><a href="satsuma.html">Satsuma</a></li>
+      <li><a href="glitchdle.html">Glitchdle</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+</main>
+
+<aside class="rail rail-first">
+  <section class="facts">
+    <h2>Facts</h2>
+    <dl>
+      <div><dt>Event</dt><dd>SteelHacks 2025, University of Pittsburgh</dd></div>
+      <div><dt>When</dt><dd>Sep 2025</dd></div>
+      <div><dt>Team</dt><dd>Me + 3 teammates</dd></div>
+      <div><dt>My part</dt><dd>The FastAPI backend and most of the React interface. A teammate wrote the Monte Carlo model.</dd></div>
+      <div><dt>Built with</dt><dd>React, Vite, FastAPI, Pydantic, SQLite, Python</dd></div>
+      <div><dt>Code</dt><dd><a href="https://github.com/cherryann518/steelhacks25">View on GitHub</a></dd></div>
+    </dl>
+  </section>
+</aside>
+
+<script src="../site.js"></script>
+</body>
+</html>
