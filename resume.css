@@ -82,7 +82,7 @@
    rows start 5.45pt in and run 5.45pt past the rule, so they do here too. */
 .paper .entry { margin: 0 calc(var(--pt) * -5.45) 0 calc(var(--pt) * 5.45); }
 .paper .entry + .entry { margin-top: calc(var(--pt) * 5.10); }
-.paper .projects .entry + .entry { margin-top: calc(var(--pt) * 7.07); }
+.paper .projects .entry + .entry { margin-top: calc(var(--pt) * 1.55); }
 .paper .row { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: calc(var(--pt) * 12); }
 .paper .row > :last-child { margin-left: auto; text-align: right; }
 .paper .row > :last-child > em { padding-right: calc(var(--pt) * 1.4); }
@@ -103,7 +103,7 @@
   background: currentColor;
 }
 .paper .skills p, .paper .extracurricular .row { margin-left: calc(var(--pt) * 5.45); }
-.paper .extracurricular .row { line-height: calc(var(--pt) * 12.89); }
+.paper .extracurricular .row { line-height: calc(var(--pt) * 13.03); }
 .paper code { font-family: "Latin Modern Mono", monospace; font-size: 1em; }
 
 /* LaTeX leaves a little extra room after a colon and after italics */
